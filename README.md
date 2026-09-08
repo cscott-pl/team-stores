@@ -1,2 +1,0 @@
-# team-stores
-Team Stores
