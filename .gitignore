@@ -35,3 +35,9 @@ coverage/
 .eslintcache
 .stylelintcache
 *.tsbuildinfo
+
+# Design export — reference/uploads/ is 213 MB across 562 files and is
+# referenced zero times by the in-scope Workspace (workspace-app.jsx).
+# Kept on disk for completeness, deliberately out of git history.
+# The rest of reference/ is committed as-is and must never be edited.
+reference/uploads/

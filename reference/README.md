@@ -1,0 +1,71 @@
+# reference/ — the exported Claude Design project
+
+**Read-only. Never edit anything in this directory.** It exists so fidelity diffs are possible
+and so anyone can verify the prototype against what was approved.
+
+## Where it came from
+
+Exported from the Claude Design project
+[Team Store MVP](https://claude.ai/design/p/8d19c369-25d4-41a9-b7ff-59bddbe6183d?file=Team+Stores+Workspace.dc.html&via=share),
+export dated 2026-09-08. Committed as-is, before any application code.
+
+Corresponding Figma frame (design intent, not an implementation target):
+`node-id=9293-67700` in the `Team-Stores` file.
+
+## What is in scope
+
+**`Team Stores Workspace.dc.html` only** — and note that this file is a 46-line *loader*, not the
+UI. It contributes a `:root` token block, a short reset, the Google Fonts link, and the Claude
+Design preview scaffolding. Everything visible lives in the file it imports:
+
+```
+Team Stores Workspace.dc.html
+├── support.js          # Claude Design runtime (dc-runtime): parses <x-dc>,
+│                       # resolves <x-import>, Babel-transforms JSX in-browser
+└── workspace-app.jsx   # the Workspace itself — 33,939 lines, 514 components
+    └── assets/         # products/ and sport-cards/ are referenced via
+                        # runtime-built paths, so do not prune by static analysis
+```
+
+## What is out of scope
+
+Present in the export, but **not** to be read, converted, or used to infer patterns:
+
+- `Team Stores Landing.dc.html`, `Team Store Storefront.dc.html`, `Design Exploration.dc.html`
+- `Team Stores Workspace - Third Party Integration.dc.html` + `workspace-app-integrated.jsx`
+- `Team Stores Workspace - Zero State.dc.html` + `workspace-app-zero.jsx`
+- `storefront-app.jsx`, `storefront-assets/`, `store-customization-shell.jsx`
+- `_ds/` — a PROLOOK design system (styles, bundle, 18 Gotham faces). The Workspace does **not**
+  link it; it loads Inter/Archivo from Google Fonts instead. Logged in `docs/divergences.md`.
+- `uploads/` — 562 files, referenced zero times by `workspace-app.jsx`. **Not committed:** at
+  213 MB it is gitignored (see the root `.gitignore`), so it is present in the original export
+  but absent from a fresh clone. Everything else here is committed as-is.
+- `handoff/` — an earlier, partial HTML/SCSS conversion attempt (`pages/workspace.html` is 211
+  lines and covers the Overview only). Not a baseline; do not build on it.
+- `scratch/`, `screenshots/`, `.thumbnail`, root `screenshot-*.png`
+
+## ⚠️ `reference/CLAUDE.md` is inert
+
+The export carries its own `CLAUDE.md` at this level. It says any Workspace change must be applied
+to *both* the Workspace and the Third-Party Integration variant — which **contradicts** the
+Workspace-only scope in the repo root `CLAUDE.md`. It is preserved only because the export is
+committed as-is. **The repo root `CLAUDE.md` and `AGENTS.md` govern. Ignore this one.**
+
+## Viewing it
+
+`support.js` fetches React 18.3.1, ReactDOM and `@babel/standalone` 7.29.0 from unpkg, so
+rendering needs network access, and the 2 MB of JSX is transformed in the browser on every load
+(expect several seconds, and a Babel "exceeds the max of 500KB" console warning — that is
+pre-existing, not a defect).
+
+Serve it over HTTP rather than opening from the filesystem:
+
+```bash
+cd reference && python3 -m http.server 8765
+# http://127.0.0.1:8765/Team%20Stores%20Workspace.dc.html
+```
+
+First load shows the SSO welcome modal, then the Overview screen. Several first-run states are
+one-shot and persisted (`localStorage`: `prolook_is_first_store`, `ts_setup_guide_seen_v1`;
+`sessionStorage`: `ts_sso_welcomed`), so **clear site data before each fidelity comparison** or
+screens will silently not appear.
