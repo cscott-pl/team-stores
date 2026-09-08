@@ -44,12 +44,24 @@ Present in the export, but **not** to be read, converted, or used to infer patte
   lines and covers the Overview only). Not a baseline; do not build on it.
 - `scratch/`, `screenshots/`, `.thumbnail`, root `screenshot-*.png`
 
-## ⚠️ `reference/CLAUDE.md` is inert
+## ⚠️ The export's own CLAUDE.md is renamed, deliberately
 
-The export carries its own `CLAUDE.md` at this level. It says any Workspace change must be applied
-to *both* the Workspace and the Third-Party Integration variant — which **contradicts** the
-Workspace-only scope in the repo root `CLAUDE.md`. It is preserved only because the export is
-committed as-is. **The repo root `CLAUDE.md` and `AGENTS.md` govern. Ignore this one.**
+The export carries a `CLAUDE.md` at this level. It says any Workspace change must be applied to
+*both* the Workspace and the Third-Party Integration variant — which **contradicts** the
+Workspace-only scope in the repo root `CLAUDE.md`.
+
+It has been renamed to **`CLAUDE.md.original`**. Content is unchanged (sha256 `57e2d64b…`); only
+the filename differs. This is the single intentional deviation from committing the export as-is,
+and it is a safety measure, not an edit: a subdirectory `CLAUDE.md` is loaded on demand when files
+in its subtree are read, so a future session doing fidelity work inside `reference/` would have
+silently picked up the out-of-scope instruction. A note in this README cannot prevent that,
+because the failing session is precisely the one that never reads the README.
+
+**Do not rename it back, and do not add any `CLAUDE.md`, `AGENTS.md`, or `.claude/` directory
+under `reference/`.** Verified at import: `CLAUDE.md.original` is the only such file anywhere in
+the export, including under `uploads/`.
+
+The repo root `CLAUDE.md` and `AGENTS.md` govern.
 
 ## Viewing it
 
