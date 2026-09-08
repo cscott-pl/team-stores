@@ -63,6 +63,29 @@ the export, including under `uploads/`.
 
 The repo root `CLAUDE.md` and `AGENTS.md` govern.
 
+## Archival of the full export — ⚠️ ACTION REQUIRED
+
+What is committed here is the export **minus `uploads/`** — 360 files, 96 MB of the original 309 MB.
+The complete export therefore exists **in one place only: the machine it was downloaded to.**
+
+That makes "verifiable against what was approved" temporary. The first time that laptop is
+replaced, reimaged or lost, the 213 MB and 562 files excluded from git are gone, and this
+directory can no longer be checked against the full original.
+
+**The full 309 MB export, `uploads/` included, must be archived somewhere durable and shared** —
+not a personal laptop, not a personal cloud folder.
+
+| | |
+|---|---|
+| **Archive location** | `TODO — to be filled in by Connor` |
+| **Date archived** | `TODO — to be filled in by Connor` |
+| **Archived by** | `TODO` |
+| **Contents** | full export as downloaded, 309 MB / 921 files, including `uploads/` |
+| **Source export date** | 2026-09-08 |
+
+Tracked as OQ-P12 in `../docs/open-questions.md`. The matching requirement is recorded in
+`../REPO-SETUP.md` §1.
+
 ## Viewing it
 
 `support.js` fetches React 18.3.1, ReactDOM and `@babel/standalone` 7.29.0 from unpkg, so
