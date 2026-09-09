@@ -1,0 +1,165 @@
+// =============================================================================
+// Typography tokens — Team Store Workspace
+// =============================================================================
+//
+// EXTRACTED FROM THE PROTOTYPE. Source: reference/workspace-app.jsx +
+// reference/Team Stores Workspace.dc.html (export 2026-09-08).
+//
+// ⚠️ TYPEFACE IS AN OPEN QUESTION — see OQ-B02 and DIV-001/DIV-002.
+//
+// The prototype loads Archivo + Inter + JetBrains Mono from Google Fonts.
+// The PROLOOK design system ships self-hosted Gotham (18 .otf faces) and its
+// own lint config forbids any non-Gotham font. The prototype wins on fidelity,
+// so Archivo/Inter is what is implemented — but the swap is made cheap on
+// purpose:
+//
+//   SWITCHING TO SELF-HOSTED GOTHAM IS:
+//     1. two variable values in §1 below
+//     2. one import swap in src/styles/fonts.scss
+//     3. nothing else — no component touches a font family directly
+//
+// If you are here to make that change, those are the only two places.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. Font families — the ONLY place a typeface is named
+// -----------------------------------------------------------------------------
+// Two families, as specified. `--font-display` is the prototype's Archivo
+// (114 explicit uses, all headings and emphasis); `--font-body` is the Inter
+// set on `body` in the dc.html, which everything else inherits.
+//
+// To adopt Gotham: set both to `"Gotham", ...` and swap the import in
+// src/styles/fonts.scss. Cross-reference: DIV-001, DIV-002, OQ-B02.
+
+:root {
+  --font-display: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body:    "Inter",   system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  // ⚠️ A THIRD family the brief did not anticipate. The prototype genuinely
+  // uses JetBrains Mono in 34 places (SKUs, order numbers, codes), so dropping
+  // it would be a visible fidelity change. Kept, and flagged rather than
+  // silently folded into one of the two above. The design system has no mono
+  // face at all — part of OQ-B02.
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+
+// -----------------------------------------------------------------------------
+// 2. Font sizes
+// -----------------------------------------------------------------------------
+// ⚠️ NOT A SCALE. 26 distinct sizes, including seven half-pixel values
+// (9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5). The most-used size is 13px, and
+// 12.5px is used 332 times — more than 14px. There is no ratio, no base step.
+//
+// Reproduced exactly. See docs/divergences.md — the irregularity is a finding
+// for review, not something to round off. Rounding 12.5 → 12 or 13 would shift
+// text metrics on hundreds of elements.
+
+:root {
+  --text-3xs:   8px;
+  --text-2xs:   9px;
+  --text-2xs-h: 9.5px;
+  --text-xs:    10px;
+  --text-xs-h:  10.5px;
+  --text-sm:    11px;    // 217 uses
+  --text-sm-h:  11.5px;  // 163
+  --text-base:  12px;    // 357
+  --text-base-h: 12.5px; // 332 — the second most-used size in the app
+  --text-md:    13px;    // 469 — THE most-used size
+  --text-md-h:  13.5px;  // 155
+  --text-lg:    14px;    // 210
+  --text-lg-h:  14.5px;
+  --text-xl:    15px;    // 99
+  --text-xl-h:  15.5px;
+  --text-2xl:   16px;    // 43
+  --text-3xl:   17px;
+  --text-4xl:   18px;    // 44
+  --text-5xl:   19px;
+  --text-6xl:   20px;    // 21
+  --text-7xl:   21px;
+  --text-8xl:   22px;
+  --text-9xl:   24px;
+  --text-10xl:  26px;
+  --text-11xl:  30px;
+  --text-12xl:  32px;
+}
+
+// -----------------------------------------------------------------------------
+// 3. Font weights
+// -----------------------------------------------------------------------------
+// The prototype uses SIX weights. The design system's type scale defines only
+// three (400 Book / 500 Medium / 700 Bold) — so 600, 800 and 900 have no DS
+// equivalent, though the Gotham files do ship them (Black 800, Ultra 900).
+//
+// Note the distribution is unusual: 800 is the second most-used weight (548),
+// ahead of 600 (270) and far ahead of 500 (56). This is a heavy-display design.
+
+:root {
+  --weight-regular:  400;   // 11 uses
+  --weight-medium:   500;   // 56       — DS --font-weight-medium
+  --weight-semibold: 600;   // 270      [no DS equivalent]
+  --weight-bold:     700;   // 764      — DS --font-weight-bold
+  --weight-extrabold: 800;  // 548      [no DS equivalent]
+  --weight-black:    900;   // 6        [no DS equivalent]
+}
+
+// Google Fonts is loaded with Archivo 400–900 and Inter 400–700 (see
+// src/styles/fonts.scss). So --weight-extrabold and --weight-black are
+// available on the display face only. Using 800/900 on body text would
+// synthesise. Preserve whichever face the prototype used at each site.
+
+// -----------------------------------------------------------------------------
+// 4. Line heights
+// -----------------------------------------------------------------------------
+// Unitless ratios, as the prototype uses them. 1.5 dominates; 1.55 and 1.45
+// are close variants that are genuinely distinct in the source.
+
+:root {
+  --leading-none:    1;      // 20 uses
+  --leading-tight:   1.05;
+  --leading-snug:    1.1;
+  --leading-tight-2: 1.2;
+  --leading-normal:  1.25;
+  --leading-body:    1.3;
+  --leading-relaxed: 1.35;
+  --leading-loose:   1.4;
+  --leading-copy:    1.45;   // 37
+  --leading-default: 1.5;    // 113 — the dominant value
+  --leading-prose:   1.55;   // 74
+  --leading-wide:    1.6;    // 44
+  --leading-widest:  1.85;
+}
+
+// -----------------------------------------------------------------------------
+// 5. Letter spacing
+// -----------------------------------------------------------------------------
+// The prototype tracks uppercase labels positively and display text
+// negatively. 38 distinct values; the recurring ones are named.
+
+:root {
+  --tracking-tighter: -0.01em;  // 23 uses — display/headings
+  --tracking-normal:  0;
+  --tracking-subtle:  0.005em;
+  --tracking-tight:   0.01em;   // 45
+  --tracking-wide:    0.02em;   // 42
+  --tracking-wider:   0.03em;
+  --tracking-wide-4:  0.04em;   // 55
+  --tracking-wide-5:  0.05em;   // 53
+  --tracking-wide-6:  0.06em;   // 74 — the dominant tracked value
+  --tracking-wide-7:  0.07em;
+  --tracking-wide-8:  0.08em;   // 52
+  --tracking-widest:  0.1em;    // 30 (written as both .1em and .10em)
+  --tracking-max:     0.14em;
+}
+
+// -----------------------------------------------------------------------------
+// NOT TOKENISED — deliberately
+// -----------------------------------------------------------------------------
+// No composite type styles (e.g. a single `--type-h1` bundling size + line +
+// weight + tracking, as the design system does). The prototype has no such
+// grouping: it sets fontSize, fontWeight, lineHeight and letterSpacing
+// independently at ~5,600 inline sites, and the combinations do not reduce to a
+// named set. Inventing composite styles would mean choosing which combinations
+// are canonical — a design decision, and part of OQ-B02.
+//
+// If the design system is adopted, its 20 composite --type-* styles become the
+// natural target, and that mapping is the work OQ-B02 unblocks.

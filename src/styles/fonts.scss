@@ -1,0 +1,66 @@
+// =============================================================================
+// Font loading — THE ONLY PLACE FONTS ARE FETCHED
+// =============================================================================
+//
+// Isolated deliberately. Together with the two family variables in
+// _typography.scss §1, this file is the complete surface area of the typeface
+// decision. No component imports a font or names a family.
+//
+// ⚠️ OPEN QUESTION — OQ-B02 / DIV-001 / DIV-002.
+//
+// The prototype fetches Archivo, Inter and JetBrains Mono from Google Fonts at
+// runtime. Two things are unresolved:
+//
+//   1. Whether the Workspace should use Gotham (the PROLOOK design system's
+//      typeface, shipped self-hosted as 18 .otf faces in
+//      reference/_ds/.../fonts/) instead.
+//   2. Whether a runtime third-party font request is acceptable for internal
+//      authenticated tooling at all.
+//
+// Fidelity wins for now: the prototype's fonts are what is implemented.
+//
+// -----------------------------------------------------------------------------
+// TO SWITCH TO SELF-HOSTED GOTHAM
+// -----------------------------------------------------------------------------
+//   1. Delete the @import below.
+//   2. Uncomment the @font-face block beneath it and copy the .otf files from
+//      reference/_ds/.../fonts/ into public/fonts/.
+//   3. Set --font-display and --font-body in _typography.scss §1 to
+//      `"Gotham", …`.
+//   Nothing else changes. No component references a font family.
+//
+//   Note: Gotham has no monospace face. --font-mono would need a separate
+//   answer — see _typography.scss §1.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Current: Google Fonts, exactly as the prototype requests them
+// -----------------------------------------------------------------------------
+// Verbatim from reference/Team Stores Workspace.dc.html — same families, same
+// weight ranges, same display=swap. Do not add or drop a weight: Archivo
+// 400–900 is what makes --weight-extrabold (548 uses) and --weight-black
+// available on the display face.
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+// The prototype also emits preconnect hints in the document head:
+//   <link rel="preconnect" href="https://fonts.googleapis.com">
+//   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+// Those belong in index.html when the app is scaffolded, not here.
+
+// -----------------------------------------------------------------------------
+// Alternative: self-hosted Gotham (commented — see OQ-B02)
+// -----------------------------------------------------------------------------
+// Weight map from reference/_ds/.../tokens/fonts.css:
+//   Thin 100 · XLight 200 · Light 300 · Book 400 · Medium 500
+//   Bold 700 · Black 800 · Ultra 900   (italics available for each)
+//
+// @each $weight, $file in (400: "Book", 500: "Medium", 700: "Bold", 800: "Black", 900: "Ultra") {
+//   @font-face {
+//     font-family: "Gotham";
+//     font-weight: $weight;
+//     font-style: normal;
+//     font-display: swap;
+//     src: url("/fonts/Gotham-#{$file}.otf") format("opentype");
+//   }
+// }

@@ -1,0 +1,315 @@
+// =============================================================================
+// Design tokens — Team Store Workspace
+// =============================================================================
+//
+// EXTRACTED FROM THE PROTOTYPE, NOT DESIGNED HERE.
+// Source: reference/workspace-app.jsx + reference/Team Stores Workspace.dc.html
+// (export dated 2026-09-08). Values are what the prototype actually renders,
+// including where they are irregular. See docs/divergences.md for the
+// irregularities — they are findings, not things to tidy.
+//
+// NAMING follows the PROLOOK design system's semantic vocabulary
+// (reference/_ds/.../tokens/*.css) wherever an equivalent exists, with the
+// PROTOTYPE's values inside. That is deliberate: if OQ-B02 is answered
+// "adopt the design system", it becomes a change of VALUES in this one file —
+// no renaming, no component edits.
+//
+// Names marked `[no DS equivalent]` are inventions in the DS's style. Those are
+// exactly the places where adopting the DS would need design input.
+//
+// ⚠️ Fidelity beats cleanliness. Do not "fix" a value here to match the design
+// system. See OQ-B02 in docs/open-questions.md.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. Colour primitives — the palette actually in use
+// -----------------------------------------------------------------------------
+// The prototype carries TWO neutral ramps simultaneously: its own (from the
+// dc.html :root block) and the Tailwind Zinc ramp (which the design system also
+// uses). Both are reproduced because both are rendered. See DIV-005.
+
+:root {
+  // ---- Prototype neutral ramp (dc.html :root) — the dominant one ----
+  --ink:        #0e0e10;   // 1180 uses — the primary ink
+  --ink-2:      #1a1a1d;
+  --muted:      #6b6b72;   // 465
+  --muted-2:    #9a9aa1;   // 443
+  --line:       #e5e5e9;   // 53
+  --line-2:     #ececf0;   // 332 — the dominant border colour
+  --bg:         #ffffff;   // 1056
+  --bg-soft:    #f7f7f8;   // 32
+  --bg-soft-2:  #f1f1f3;   // 160
+  --page:       #fbfbfc;   // 17 — the app root background [no DS equivalent]
+
+  // ---- Tailwind Zinc ramp — also present, and matches the design system ----
+  --zinc-50:  #fafafa;
+  --zinc-100: #f4f4f5;
+  --zinc-200: #e4e4e7;
+  --zinc-300: #d4d4d8;   // 296 — second most-used border colour
+  --zinc-400: #a1a1aa;
+  --zinc-500: #71717a;
+  --zinc-600: #52525b;
+  --zinc-700: #3f3f46;
+  --zinc-800: #27272a;
+  --zinc-900: #18181b;
+  --zinc-950: #09090b;
+
+  // ---- Accent — PROLOOK brand red. Differs from the DS red entirely ----
+  --red-accent:      #e1251b;   // 151 — DS --red-500 is #ef4444
+  --red-accent-ink:  #b81d14;   // 104 — hover/pressed
+
+  // ---- Status ----
+  --green-600:   #1f9d55;   // 58  — success
+  --green-700:   #1f7a44;   // 34
+  --green-soft:  #e7f5ed;   // 25
+  --blue-600:    #2563eb;   // 43  — matches DS --blue-600 exactly
+  --navy-800:    #1d3a8a;   // 35  — the wizard's "Navy" accent variant
+  --navy-700:    #2944a8;
+  --navy-soft:   #eef3fb;
+  --amber-700:   #8a5f10;   // 24  — archived / warning text
+  --amber-600:   #b06f1e;
+  --amber-soft:  #fdf6e7;   // 21  — archived banner background
+  --amber-line:  #efdcae;   // 18
+  --orange-600:  #e8590c;
+  --red-soft:    #fdecea;   // 16  — error background
+  --red-line:    #f3c9c5;
+}
+
+// -----------------------------------------------------------------------------
+// 2. Semantic colour — design-system vocabulary, prototype values
+// -----------------------------------------------------------------------------
+
+:root {
+  // Text
+  --text-primary:   var(--ink);
+  --text-secondary: var(--muted-2);
+  --text-muted:     var(--muted);
+  --text-inverse:   var(--bg);
+  --text-link:      var(--blue-600);
+  --text-success:   var(--green-600);
+  --text-error:     var(--red-accent);
+  --text-warning:   var(--amber-700);   // [no DS equivalent]
+
+  // Surfaces
+  --surface-page:    var(--page);
+  --surface-card:    var(--bg);
+  --surface-subtle:  var(--bg-soft);
+  --surface-muted:   var(--bg-soft-2);
+  --surface-hover:   var(--line-2);
+  --surface-inverse: var(--ink);
+  --surface-success: var(--green-soft);   // [no DS equivalent]
+  --surface-warning: var(--amber-soft);   // [no DS equivalent]
+  --surface-error:   var(--red-soft);     // [no DS equivalent]
+
+  // Borders
+  --border-default: var(--line-2);    // 159 uses as `1px solid #ececf0`
+  --border-strong:  var(--zinc-300);  // 154 uses as `1px solid #d4d4d8`
+  --border-subtle:  var(--line);
+  --border-primary: var(--ink);
+  --border-warning: var(--amber-line);  // [no DS equivalent]
+  --border-error:   var(--red-line);
+
+  // Actions
+  --action-primary:       var(--ink);
+  --action-primary-hover: var(--ink-2);
+  --action-subtle:        var(--bg-soft-2);
+  --action-subtle-hover:  var(--line-2);
+  --action-danger:        var(--red-accent);
+  --action-danger-hover:  var(--red-accent-ink);
+
+  // Focus — the prototype's own ring, tinted with the brand red
+  --focus-ring: rgba(225, 37, 27, 0.18);
+}
+
+// -----------------------------------------------------------------------------
+// 3. Spacing
+// -----------------------------------------------------------------------------
+// NOT a clean 4px scale. The prototype uses 6, 10 and 14 alongside the 4px
+// steps, and every value below is genuinely rendered. Reproduced as-is;
+// logged in docs/divergences.md rather than rounded into a scale.
+
+:root {
+  --space-0:  0;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  6px;    // off-scale, 49 uses
+  --space-4:  8px;    // 368 uses — the dominant gap
+  --space-5:  10px;   // off-scale, 99 uses
+  --space-6:  12px;   // 318 uses
+  --space-7:  14px;   // off-scale, 38 uses
+  --space-8:  16px;   // 222 uses
+  --space-9:  20px;
+  --space-10: 24px;
+  --space-11: 28px;
+  --space-12: 32px;
+  --space-13: 36px;
+  --space-14: 40px;
+  --space-15: 52px;
+  --space-16: 64px;
+
+  // Component padding, from the dominant inline shorthands
+  --pad-control:  8px 12px;    // inputs, small controls
+  --pad-button:   12px 16px;   // 76 uses — the most common padding pair
+  --pad-button-lg: 12px 24px;  // 47 uses
+  --pad-chip:     4px 12px;
+  --pad-card:     16px 20px;
+  --pad-modal:    16px 28px;
+}
+
+// -----------------------------------------------------------------------------
+// 4. Radii
+// -----------------------------------------------------------------------------
+// Also irregular: 1, 2, 3, 5, 7, 9, 11, 13, 14 and 20 all appear alongside the
+// even steps. The named tokens cover the dominant values; the strays stay
+// inline in the component that uses them rather than being forced into a scale.
+
+:root {
+  --radius-xs:   3px;
+  --radius-sm:   4px;    // 126 uses
+  --radius-md:   6px;    // 339 uses — the dc.html `--radius`
+  --radius-lg:   8px;    // 234 uses
+  --radius-xl:   10px;   // 143 uses
+  --radius-2xl:  12px;   // 57 uses
+  --radius-pill: 999px;  // 218 uses
+  --radius-full: 50%;    // 137 uses — circular avatars/icon buttons
+}
+
+// -----------------------------------------------------------------------------
+// 5. Borders
+// -----------------------------------------------------------------------------
+
+:root {
+  --border-width: 1px;   // the prototype uses 1px everywhere except 5 dashed cases
+  --border-style-dashed: 1px dashed var(--border-strong);
+}
+
+// -----------------------------------------------------------------------------
+// 6. Shadows
+// -----------------------------------------------------------------------------
+// 63 distinct box-shadow strings, most used once. The five below are the
+// recurring elevation steps; one-off shadows stay in their component's SCSS.
+// Note two different shadow tints coexist — rgba(20,20,30,…) and rgba(9,9,11,…).
+
+:root {
+  --shadow-xs:    0 1px 2px rgba(20, 20, 30, 0.03);   // 14 uses
+  --shadow-sm:    0 1px 2px rgba(20, 20, 30, 0.04);   // 6
+  --shadow-card:  0 1px 3px rgba(20, 20, 30, 0.04);   // the dc.html --shadow-card
+  --shadow-md:    0 8px 24px rgba(20, 20, 30, 0.10);  // 6
+  --shadow-lg:    0 12px 32px rgba(9, 9, 11, 0.25);   // 4
+  --shadow-modal: 0 24px 48px rgba(9, 9, 11, 0.18);   // 3 — matches DS --shadow-modal exactly
+}
+
+// -----------------------------------------------------------------------------
+// 7. Motion
+// -----------------------------------------------------------------------------
+// The prototype's dominant easing is the bare keyword `ease` (77 uses), but
+// cubic-bezier(0.2, 0, 0, 1) appears 11 times — and that is EXACTLY the design
+// system's --ease-standard. A rare point of three-way agreement.
+
+:root {
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);   // 11 uses; == DS --ease-standard
+  --ease-default:  ease;                          // 77 uses — the prototype's actual default
+
+  --duration-fast:   0.12s;   // 108 uses; == DS --duration-fast (120ms)
+  --duration-mid:    0.14s;   // 84  [no DS equivalent]
+  --duration-mid-2:  0.15s;   // 51  [no DS equivalent]
+  --duration-mid-3:  0.16s;   // 32  [no DS equivalent]
+  --duration-base:   0.2s;    // 13; == DS --duration-base (200ms)
+}
+
+// -----------------------------------------------------------------------------
+// 8. Layout
+// -----------------------------------------------------------------------------
+// See docs/architecture/responsive-strategy.md. The 1280px floor is the
+// design's own: both application roots set it, and the author's comment at
+// workspace-app.jsx:25764 reads "the App is min-width: 1280".
+
+:root {
+  --layout-min-width: 1280px;   // hard floor — below this the design scrolls, it does not reflow
+  --layout-sidenav-width: 116px;
+  --layout-header-height: 92px;
+  --layout-chrome-height: 114px;  // header + sub-tabs, used in `calc(100vh - 114px)`
+
+  // Modal width guards — the only standalone `vw` usage in the prototype.
+  // These are overflow protection, not fluid layout.
+  --modal-max-width-sm: 94vw;
+  --modal-max-width-md: 95vw;
+  --modal-max-width-lg: 96vw;
+  --modal-inset-sm: calc(100vw - 32px);
+  --modal-inset-lg: calc(100vw - 48px);
+}
+
+// -----------------------------------------------------------------------------
+// 9. Z-index layers
+// -----------------------------------------------------------------------------
+// 32 distinct values from 1 to 2147483646. Named by role; the strays stay put.
+
+:root {
+  --z-base:      1;
+  --z-raised:    5;
+  --z-sticky:    20;
+  --z-dropdown:  30;
+  --z-overlay:   40;
+  --z-modal:     50;
+  --z-popover:   60;
+  --z-toast:     80;
+  --z-tooltip:   90;
+  --z-max:       700;   // the prototype's highest application layer
+  // NOTE: 2147483646 appears once, in the Tweaks panel (preview shell) — not reproduced.
+}
+
+// -----------------------------------------------------------------------------
+// 10. Fluid type — access screens only
+// -----------------------------------------------------------------------------
+// All 12 CSS clamp() expressions live in the four pre-authentication screens:
+// FeatureGate (9), AccessApplyForm, AccessPending, StripeVerifying (1 each).
+// They are `vh`-based because those are full-viewport standalone pages.
+//
+// The Workspace proper uses FIXED PIXEL VALUES THROUGHOUT. There is no fluid
+// type system to extract — do not apply these outside the access screens.
+// Those screens' scope is itself an open question (OQ-P15).
+
+:root {
+  --gate-pad-sm:     clamp(8px, 2vh, 28px);
+  --gate-pad-md:     clamp(12px, 1.8vh, 20px);
+  --gate-pad-lg:     clamp(12px, 2vh, 24px);
+  --gate-pad-xl:     clamp(12px, 2.2vh, 24px);
+  --gate-gap-sm:     clamp(13px, 1.7vh, 17px);
+  --gate-gap-md:     clamp(16px, 2.4vh, 28px);
+  --gate-gap-lg:     clamp(16px, 2.6vh, 32px);
+  --gate-hero:       clamp(34px, 5.4vh, 70px);
+  --gate-title-sm:   clamp(20px, 2vw, 40px);
+  --gate-title-md:   clamp(30px, 4vw, 46px);
+  --gate-title-lg:   clamp(32px, 4.5vw, 52px);
+  --gate-title-xl:   clamp(36px, 5vw, 58px);
+}
+
+// -----------------------------------------------------------------------------
+// 11. Reduced motion
+// -----------------------------------------------------------------------------
+// The prototype's single @media query. Reproduced verbatim in intent.
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast:  0.01ms;
+    --duration-mid:   0.01ms;
+    --duration-mid-2: 0.01ms;
+    --duration-mid-3: 0.01ms;
+    --duration-base:  0.01ms;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// NOT TOKENISED — deliberately
+// -----------------------------------------------------------------------------
+// - The 54 `minmax()` grid track definitions. They are per-table and per-grid
+//   column specs (minmax(120px, 150px), minmax(248px, 1fr), minmax(96px, .8fr),
+//   …), not a reusable scale. They belong in the component SCSS that owns the
+//   grid. Tokenising 54 arbitrary track pairs would invent a system the design
+//   does not have.
+// - The 14 @keyframes (accPop, accSpin, bounce, cheersIn, ckPop, drawerFade,
+//   drawerSlide, fadeIn, fadeOut, kebabIn, popIn, popOut, tipIn, toastIn).
+//   Animations belong with the components that use them; several are duplicated
+//   verbatim in the prototype and should be defined once in shared SCSS.
+// - The 7 JS `clamp(value, lo, hi)` helper calls. Those are numeric clamping in
+//   drag/resize logic, not CSS.
