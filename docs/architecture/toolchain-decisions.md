@@ -39,28 +39,38 @@ hold.
 
 ## Decided
 
-### Vue 3 — provisional, pinned to current stable
+### Vue 3 — **decided**
 
-**Chosen because it is where new work goes; Core's version is unconfirmed.** Vue 2 reached
-end-of-life at the end of 2023, so no new work should start there.
+**Decided by Cody on 9 September 2026.** A call, not an inference, and not provisional.
 
-**Explicitly not inferred from the stack.** An earlier draft of this reasoning inferred Vue 3
-from "Laravel with Inertia and Vite." That inference does not hold: Inertia ships separate
-adapters for each major (`@inertiajs/vue2` and `@inertiajs/vue3`), Laravel + Inertia + Vue 2 was
-a common combination, and Vite supports Vue 2 via `@vitejs/plugin-vue2`. The observed stack is
-consistent with **both** branches, so it never narrowed the question. Recording it as evidence
-would have put a conclusion into a handoff document that was never established.
+**Grounds:** the handoff artifact is source-level Vue SFCs and SCSS, which the dev team
+re-integrates into their own build. Core's exact toolchain therefore matters less than getting
+something runnable in front of people.
 
-**Versions are provisional.** They are pinned to current stable at the date above, not to Core.
-The bet is deliberately narrow: what survives re-integration is the Vue SFCs and the SCSS, so
-our Vite, Node and TypeScript versions matter much less than the Vue major, which changes
-component syntax and API enough to make a port expensive.
+**Residual risk, stated plainly: if Core turns out to be on Vue 2, the port is real work.** Not
+catastrophic and not open-ended, but real — component syntax and API differ enough that it is a
+genuine task rather than a config change. That risk was accepted knowingly in exchange for
+momentum.
 
-**Hedges taken, without contortion:** `<script setup>`, plain Composition API, and Vue-3-only
-features avoided **where avoiding them is free**. Where avoiding one would cost clarity or
-fidelity, it gets used and logged. A bounded list of "these components use Vue-3-only features"
-is more useful to a porter than a codebase bent around a version we may never need to support.
-That list lives in `docs/architecture/vue3-only-usage.md` once any such component exists.
+**The answer may still arrive.** Jowin has been asked which Vite plugin Core's config uses —
+`@vitejs/plugin-vue` or `@vitejs/plugin-vue2` — which settles the question without him having to
+characterise anything. See `docs/decisions-needed-jowin.md`. If the answer is Vue 2 we will know
+what we took on.
+
+**Explicitly not inferred from the stack.** An earlier draft reasoned from "Laravel with Inertia
+and Vite" to Vue 3. That inference does not hold — Inertia ships separate adapters per major
+(`@inertiajs/vue2` and `@inertiajs/vue3`), Laravel + Inertia + Vue 2 was common, and Vite supports
+Vue 2 via `@vitejs/plugin-vue2`. The stack is consistent with both, so it never narrowed anything.
+It is recorded here only so nobody re-derives it and mistakes it for evidence.
+
+#### Vue-2 portability hedges — withdrawn 9 September 2026
+
+Earlier guidance said to avoid Teleport, Suspense, multi-root templates and `v-model` arguments
+where avoiding them was free, to keep a Vue 2 port cheap. **That constraint is dropped.** Use
+whatever is clearest.
+
+What stays, because it is idiomatic Vue 3 rather than a hedge: **`<script setup>`** and the
+**Composition API**.
 
 ### SCSS — settled, and closed as a question
 
@@ -84,23 +94,15 @@ versions originally needed from Jowin; it no longer needs asking.
 
 ---
 
-## Open — one binary question, with Jowin
+## Asked, but no longer open — Jowin
 
-Reduced from five versions to two questions that a single glance at Core's build config answers.
-Tracked as **OQ-B03** in `docs/open-questions.md`.
+**OQ-B03 is decided** (above). These are still worth an answer, and none of them block:
 
-1. **Is Core on Vue 2 or Vue 3?**
-2. **Does Core use `@vitejs/plugin-vue` or `@vitejs/plugin-vue2`?**
+1. **Is Core on Vue 2 or Vue 3?** — phrased as: does your build config use `@vitejs/plugin-vue`
+   or `@vitejs/plugin-vue2`? Answers it from the config, with no characterisation needed.
+2. **Is Core TypeScript or plain JavaScript?**
 
-The second is the better question: it is answered by reading their build config, without anyone
-having to characterise or summarise their stack. The two answers should agree; if they disagree,
-that disagreement is itself the finding.
-
-Still wanted, but no longer blocking a decision: whether Core is TypeScript or plain JavaScript
-(bears on `REPO-SETUP.md` default decision 1, which chose TypeScript to help handoff — matching
-Core may matter more).
-
----
+**Already settled without him:** the SCSS toolchain, from the export's own `handoff/` folder.
 
 ## Not decided here
 

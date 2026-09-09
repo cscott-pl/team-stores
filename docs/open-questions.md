@@ -96,32 +96,20 @@ adopt the DS lint config. The DS is a divergence to document, not a standard to 
 
 ---
 
-### OQ-B03 · Is Core on Vue 2 or Vue 3?
+### OQ-B03 · ~~Is Core on Vue 2 or Vue 3?~~ — **DECIDED 2026-09-09**
+**Decided by Cody**, not inferred. **Vue 3, current stable.** Grounds: the handoff artifact is
+source-level SFCs and SCSS that the dev team re-integrates into their own build, so Core's exact
+toolchain matters less than getting something runnable in front of people.
 
-**Owner:** Jowin
-**Raised:** 2026-09-08 · **Narrowed:** 2026-09-09 · **Status:** open — no longer blocking
+**Residual risk recorded:** if Core is on Vue 2, the port is real work. Accepted knowingly.
 
-**Narrowed from five versions to two questions:**
+Jowin has still been asked which Vite plugin Core uses, so the answer may arrive — it would tell
+us what was taken on, not change the decision. See `docs/architecture/toolchain-decisions.md` and
+`docs/decisions-needed-jowin.md`.
 
-1. **Is Core on Vue 2 or Vue 3?**
-2. **Does Core use `@vitejs/plugin-vue` or `@vitejs/plugin-vue2`?** — the better question, because
-   their build config answers it without anyone having to characterise their stack.
-
-Also wanted, not blocking: **is Core TypeScript or plain JavaScript?**
-
-**Why it narrowed.** What survives re-integration is the Vue SFCs and the SCSS; our Vite, Node
-and TypeScript versions barely do. So only the **Vue major** genuinely matters — it changes
-component syntax and API enough to make a port expensive.
-
-**Dropped from this question entirely:** the **SCSS compiler**, settled from the export rather
-than from Jowin. `reference/handoff/style/` is 45 `@use` and 0 `@import`, so the dev side is
-already on modern dart-sass modules. See `docs/architecture/toolchain-decisions.md`.
-
-**No longer blocking.** Scaffolding proceeds on **Vue 3, provisional**, chosen because it is
-where new work goes rather than inferred from Core's stack — Laravel + Inertia + Vite is
-consistent with both majors, so it never narrowed the binary. Hedges (`<script setup>`, plain
-Composition API, Vue-3-only features avoided where free) keep a Vue 2.7 port mechanical without
-contorting the code.
+**Consequence:** the Vue-2 portability hedges are withdrawn. `<script setup>` and the Composition
+API stay because they are idiomatic Vue 3; Teleport, Suspense, multi-root templates and `v-model`
+arguments are no longer avoided.
 
 ## Product and design
 
