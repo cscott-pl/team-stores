@@ -12,12 +12,16 @@ other folder in the TS space. Out-of-scope, unvalidated and outdated respectivel
 Confluence; the summaries are Confluence's own. Indexed **2026-09-09**; the most recently modified
 page (Store Home) was changed **2026-09-03, six days earlier**.
 
-> **Read status (first pass, 2026-09-09): 9 of 30 Workspace pages read in full**, prioritised by
+> **Read status (2026-09-09): 11 of 30 Workspace pages read in full**, prioritised by
 > what unblocks a decision. Marked **✅ read** below. Cross-check results are in
 > `docs/divergences.md` § "Spec ↔ prototype cross-check"; citations are attached in
 > `docs/features/README.md` and `docs/architecture/workspace-screen-inventory.md`.
 >
-> The 21 unread pages are mostly detail-level (products, orders, roster, settings interiors) rather
+> **The second pass overturned two first-pass findings** (DIV-008 and DIV-014), both of which had
+> reached Connor's list. Reading further has high yield — treat any single-spec conclusion as
+> provisional until the page that *owns* the model has been read.
+>
+> The 19 unread pages are mostly detail-level (products, orders, roster, settings interiors) rather
 > than decision-gating. Second pass should start with **Store General Settings** (owns the Store
 > Status card, archive Danger Zone and the fundraising interstitial), **Roster Management** (Epic 0
 > owns the structure model) and **Product Catalog Management** (largest feature, owns the
@@ -54,9 +58,9 @@ page (Store Home) was changed **2026-09-03, six days earlier**.
 | ✅ [Team Stores Workspace](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153245697) | Sep 01, 2026 | `TeamStoresHeader`, 3 tabs |
 | [Store Home (Home Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4308860929) | **Sep 03, 2026** | dashboard `home` tab |
 | ✅ [Tabbed Store Dashboard](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153409540) | Sep 02, 2026 | `Dashboard`, 6 tabs |
-| [Store General Settings (Settings Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4154130493) | Sep 02, 2026 | dashboard `general` tab |
+| ✅ [Store General Settings (Settings Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4154130493) | Sep 02, 2026 | dashboard `general` tab |
 | [Workspace Settings](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4301389828) | Sep 01, 2026 | `wsettings` |
-| [Product Catalog Management (Products Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153376773) | Sep 01, 2026 | dashboard `products` tab |
+| ✅ [Product Catalog Management (Products Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153376773) | Sep 01, 2026 | dashboard `products` tab |
 | [Order Management (Orders Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153933836) | Jul 16, 2026 | dashboard `orders` tab |
 | [All-Stores Orders Page](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4164812801) | Sep 01, 2026 | `orders` (cross-store) |
 | [Roster Management (My Team(s) Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153507841) | Aug 31, 2026 | dashboard `roster` tab |
