@@ -317,18 +317,25 @@ the **63 distinct box-shadows**, most used once, in two different tints.
 
 **Post-MVP question for design**, not an MVP blocker. See `docs/divergences.md` DIV-006.
 
-### OQ-P18 · The launch gate contradicts three specs — reproduce the defect or fix it?
-**Owner:** Connor · **Raised:** 2026-09-09 · **Status:** open
+### OQ-P18 · The launch gate, and the product model underneath it
+**Owner:** Connor · **Raised:** 2026-09-09 · **Revised same day, second spec pass**
 
-The prototype lets a rep launch a store with only **draft** products
-(`canLaunch = (store.products || []).length > 0`). Three specs independently require **≥1
-*published* product**, and one gives the exact tooltip — *"Publish at least one product to launch
-your store."* The prototype's tooltip says *"Add at least one product."*
+The prototype lets a rep launch with **any** product row — `canLaunch = products.length > 0` — so a
+store can go live with a catalog that is entirely hidden or draft. Nothing for a buyer to see.
+Every spec reading blocks that.
 
-**This is the first divergence where fidelity and correctness genuinely conflict.** Reproducing
-the prototype means shipping a store that can go live with an empty storefront — the precise
-failure the gate exists to prevent.
+**But the model underneath moved, and the prototype is mid-migration.** Product Catalog Management
+(Sep 1) states *"there is no draft or published state"* and replaces it with a per-item
+**Visibility** toggle, default off; the gate is *"at least one **visible** product"*. Three older
+pages still say "published". The prototype carries **both** — `status: draft|published` (20 uses)
+*and* a `hidden` flag (28 uses, already implementing the spec's Incomplete-bundle rule) — with the
+gate reading neither.
 
-**Default:** reproduce the prototype exactly and log it. Fidelity wins unless told otherwise.
-**If you say fix it:** one condition changes, plus the tooltip string. Invisible until a rep tries
-to launch a draft-only store. See `docs/divergences.md` DIV-008.
+**Two questions, and the second is the real one:**
+1. Fix the gate, or reproduce it faithfully and log it?
+2. Does the conversion reproduce the prototype's **dual product model**, or converge on the
+   specified visibility-only model?
+
+**Default:** reproduce the prototype exactly, both the gate and the dual model, and log it.
+**Note:** (2) is properly a Products Tab decision and should be taken with that conversion, not
+ahead of it. See DIV-008.

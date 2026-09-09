@@ -353,17 +353,51 @@ or, worse, change them.
 
 ## B. Prototype contradicts the spec
 
-### DIV-008 · The launch gate checks *any* product; three specs require a *published* one
+### DIV-008 · The launch gate ignores product visibility — *revised 2026-09-09*
 
-| | |
+> **Revised on the second spec pass.** The first version of this entry said "three specs require a
+> *published* product". That was accurate about those three pages but **wrong about the current
+> model** — I had not yet read the page that owns it. The conclusion survives; the terminology and
+> the reason do not.
+
+#### The specs are not unanimous, and the newest ones changed the model
+
+| Spec | Modified | Launch gate wording |
+|---|---|---|
+| Launch & Status Controls | Aug 3 | *"zero **published** products"*; tooltip *"Publish at least one product to launch your store."* |
+| Store Status & Lifecycle | Aug 31 | *"zero **published** products"* |
+| Roster-Optional Architecture | Aug 31 | *"≥1 **published** product"* |
+| **Product Catalog Management** | **Sep 1** | *"**there is no draft or published state** — but it is **Hidden by default**… A rep makes an item buyer-facing by turning on its **Visibility** toggle. A store cannot launch until at least one product is **visible**."* |
+| **Tabbed Store Dashboard** | **Sep 2** | *"the launch gate requires at least one **visible** product (Products Tab spec)"* |
+
+**Product Catalog Management owns the product model, and it has removed draft/published
+altogether**, replacing it with a per-item **Visibility** toggle defaulting to off. The two most
+recently edited pages both say **visible**. The three "published" pages are stale on vocabulary —
+the same staleness pattern as DIV-012.
+
+#### The prototype carries both models at once, and the gate uses neither
+
+| Model | In the prototype |
 |---|---|
-| **Spec** | Store Status & Lifecycle: *"Given a Draft store with **zero published products**, when the rep attempts to launch, then the launch action is disabled."* Launch & Status Controls gives the exact tooltip: *"Publish at least one product to launch your store."* Roster-Optional Architecture confirms it a third time: *"The launch gate stays product-based (≥1 published product)."* |
-| **Prototype** | `workspace-app.jsx:11041` — `const canLaunch = (store.products \|\| []).length > 0;` and `HomeTab`'s `onLaunch={() => {if ((store.products \|\| []).length) setShowLaunchModal(true);}}`. Tooltip reads *"Add at least one product to launch your store."* |
-| **Effect** | A store with only **draft** products can be launched, going live with nothing on the storefront — the exact failure the gate exists to prevent. |
-| **Note** | The prototype *has* the published-product concept — `deriveDone` at `:25956` uses `products.some(p => p.status === "published")` for the onboarding milestone. The gate simply wasn't switched to it. |
+| Old — `status: "draft" \| "published"` | present: 8 `draft`, 12 `published` |
+| New — `hidden` / visibility flag | present: **28 references**, and it already implements the spec's Incomplete-bundle rule at `:12476` — `hidden: ids2.length < 2 ? true : b.hidden` |
+| Launch gate | `:11041` — `const canLaunch = (store.products \|\| []).length > 0` — **reads neither** |
 
-**Fidelity tension.** This is the first divergence where reproducing the prototype means
-reproducing a defect three specs contradict. Flagged, not resolved — logged as **OQ-P18**.
+So the prototype is mid-migration: the new visibility model exists and works for bundles, the old
+draft/published model persists alongside it, and the launch gate ignores both and counts rows.
+
+#### What still stands
+
+**The gate is too permissive, on every reading.** A store can go live with a catalog where every
+item is hidden or draft — nothing for a buyer to see. That is the failure the gate exists to
+prevent, and both the old and the new spec wording would block it.
+
+**What changed:** the fix is not "check `status === 'published'`". It is "check the visibility
+flag", and it sits inside a larger question — whether we reproduce the prototype's dual product
+model or converge on the specified one. That is bigger than a launch gate and belongs with the
+Products Tab conversion, not before it.
+
+Tracked as **OQ-P18**.
 
 ### DIV-009 · Archived → Draft is self-service in the prototype; the spec forbids it twice
 

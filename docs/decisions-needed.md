@@ -63,16 +63,19 @@ alongside them, 5–13 ΔE away, doing the same jobs. Nobody decided that.
 
 ## 3. The launch gate lets a rep go live with an empty storefront
 
-The prototype allows launching a store when **any** product exists, including drafts only. **Three
-separate specs** require at least one *published* product, and one gives the exact tooltip:
-*"Publish at least one product to launch your store."* The prototype says *"Add at least one
-product."*
+The prototype allows launching whenever **any** product row exists — so a store can go live with a
+catalog that is entirely hidden or draft, with nothing a buyer can see. Every version of the spec
+blocks that.
 
-This is the first case where fidelity and correctness genuinely conflict — reproducing the
-prototype means reproducing a bug that lets a store go live with nothing buyers can see.
+Underneath it is a bigger question. Your **Product Catalog Management** page (1 Sept) says *"there
+is no draft or published state"* and replaces it with a **Visibility** toggle, default off. Three
+older pages still say "published". **The prototype carries both models at once** — draft/published
+*and* a hidden flag — and the launch gate reads neither.
 
-- **Default:** reproduce the prototype and log it. Fidelity wins unless you say otherwise.
-- **If you say fix it:** one condition and one tooltip string. Invisible unless a rep tries it.
+- **Default:** reproduce the prototype exactly and log it. Fidelity wins unless you say otherwise.
+- **If you say fix the gate:** small — one condition, one tooltip.
+- **The model question is bigger** and we'd rather take it with the Products tab conversion than
+  ahead of it. Flagging now so it isn't a surprise then.
 
 ## 4. Two setup guides are running at once
 
