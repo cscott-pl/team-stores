@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #e9eaee; }
+    #__bundler_thumbnail { display: none; }
+  </style>
+</helmet>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#1d2b4d"></rect>
+    <g fill="#ffffff">
+      <rect x="470" y="250" width="260" height="160" rx="20" opacity="0.16"></rect>
+      <text x="600" y="362" font-family="Archivo, Arial, sans-serif" font-size="120" font-weight="900" text-anchor="middle">G</text>
+      <text x="600" y="500" font-family="Archivo, Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="4" text-anchor="middle">TEAM STORE</text>
+    </g>
+  </svg>
+</template>
+<x-import component-from-global-scope="SFApp" from="./storefront-app.jsx" hint-size="100%,100%"></x-import>
+</x-dc>
+</body>
+</html>

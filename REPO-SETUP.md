@@ -24,6 +24,20 @@ Commit the export **before** writing any application code, in its own commit. Th
 later fidelity diffs possible, and what lets anyone verify the prototype against what was
 approved. Add a one-line `reference/README.md` saying it is read-only and where it came from.
 
+### The full export must also be archived externally
+
+Not everything in the export belongs in git. `reference/uploads/` is 213 MB across 562 files and
+is referenced zero times by the in-scope Workspace, so it is gitignored — which leaves the
+**complete 309 MB export existing in exactly one place: the machine it was downloaded to.**
+
+"Verifiable against what was approved" stops being true the moment that machine is replaced. So
+the full export, `uploads/` included, **must be archived somewhere durable and shared** — not a
+personal laptop, and not a personal cloud folder. Record the location and date in
+`reference/README.md` under "Archival of the full export" so anyone can find it without asking.
+
+Treat this as part of standing the repo up, not as a follow-up. It is cheap now and impossible
+later.
+
 ## 2. Root configuration
 
 | File | Purpose | Notes |
