@@ -38,7 +38,7 @@ Confluence; the summaries are Confluence's own.
 
 ---
 
-## Workspace — provisionally in scope (26 pages)
+## Workspace — provisionally in scope (30 pages)
 
 | Page | Modified | Maps to (inventory) |
 |---|---|---|
@@ -73,7 +73,7 @@ Confluence; the summaries are Confluence's own.
 | [System Emails](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4169138177) | Sep 01, 2026 | `EmailsSection` |
 | [Roster-Optional Architecture (Open Access Stores)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4230545435) | Aug 31, 2026 | **epic, approved for build** |
 
-## Storefront and landing — background only, not built from (18 pages)
+## Storefront and landing — background only, not built from (21 pages)
 
 Public storefront and marketing surfaces. `CLAUDE.md` puts these out of scope. Indexed so the
 boundary is explicit and so cross-references from in-scope specs can be followed.
