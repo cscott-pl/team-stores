@@ -12,16 +12,10 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // dart-sass modern module system only — @use, never @import.
-        // Established from the dev side's own conversion; see
-        // docs/architecture/toolchain-decisions.md.
-        api: "modern-compiler",
-      },
-    },
-  },
+  // Vite 8 uses the dart-sass modern compiler API by default and no longer
+  // accepts an `api` option, so there is nothing to configure here. The @use-only
+  // module system is enforced by stylelint and by convention — see
+  // docs/architecture/toolchain-decisions.md.
   server: {
     port: 5173,
   },
