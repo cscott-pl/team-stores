@@ -17,7 +17,8 @@ Measured against `reference/workspace-app.jsx`, with the preview-shell line rang
 | Mechanism | Occurrences | Application | Preview shell |
 |---|---|---|---|
 | `@media` queries | 1 | 1 | 0 |
-| `clamp()` | 21 | 19 | 2 |
+| `clamp()` — **CSS** | 12 | 12 | 0 |
+| `clamp(` — JS helper calls | 7 | 7 | 0 |
 | `minmax()` | 54 | 54 | 0 |
 | `vw` units | 17 | 17 | 0 |
 | `@keyframes` | 17 | 17 | 0 |
@@ -60,24 +61,47 @@ file (the only other `1500`s are two `setTimeout` durations).
 **Do not reproduce it.** It is not application behaviour, and it must not become a token or a
 breakpoint.
 
+### The only fluid type in the product is on screens the default user never reaches
+
+All **12** CSS `clamp()` expressions live in the four pre-authentication screens — `FeatureGate`
+(9), `AccessApplyForm`, `AccessPending`, `StripeVerifying` (1 each). They are `vh`-based because
+those are full-viewport standalone pages.
+
+Two things follow, and neither is a footnote:
+
+1. **The Workspace proper contains no fluid type at all.** It is fixed-pixel above the 1280px
+   floor. There is no responsive type system to reproduce, and none should be introduced.
+2. **Those four screens are unreachable in the default state.** `TWEAK_DEFAULTS` sets
+   `hasStoreAccess: true` (see `tweaks-defaults.md`), so the gate and its flow never render. Their
+   scope is separately in question — OQ-P15.
+
+So the design's only fluid behaviour is confined to screens that are both out of the main flow and
+possibly out of scope. The 12 expressions are tokenised in `_tokens.scss` §10, scoped and labelled
+`gate-*`, precisely so nobody applies them Workspace-wide.
+
+Note also that 7 of the 19 `clamp(` occurrences are **not CSS** — they are calls to a local
+JS `clamp(value, lo, hi)` helper in drag/resize logic.
+
 ## Three consequences that govern how we build and how we check
 
 **1. Floor the layout at 1280px, matching the design.** Not as a decision of ours — as
 reproduction.
 
-**2. Build fluid above the floor, not breakpoint-based.** Reach for `clamp()`, `minmax()` and
-intrinsic grid sizing, matching the mechanism the design already uses. A breakpoint added here is
-a design change: it creates a discontinuity at a width where the design has none. If a screen
-appears to need one, that is a finding to report, not a decision to make.
+**2. Above the floor, reproduce what is there — which is mostly fixed pixels.** The design's own
+mechanisms are `minmax()` grid tracks and a handful of `vw` modal guards; fluid type exists only
+on the four access screens. Do not add breakpoints: one creates a discontinuity at a width where
+the design has none. Do not add fluid type either. If a screen appears to need either, that is a
+finding to report, not a decision to make.
 
-**3. Fidelity checks sweep continuously from 1280px upward.** There are no named breakpoints to
-test, so comparing at three fixed widths would pass while missing everything between them —
-exactly where a fluid layout breaks. Drag the viewport through the range and watch for
-discontinuity, overlap, clipping and reflow. Below 1280px, the only correct behaviour is a
-horizontal scrollbar.
+**3. Check at 1280 plus two or three wider widths — do not sweep.** An earlier revision of this
+document said to sweep continuously. That was wrong, and it followed from over-reading the fluid
+mechanisms: there is no fluid type system in the Workspace to sweep for.
 
-`AGENTS.md` fidelity checklist item 1 says "at the design's supported widths." For the Workspace
-that means **1280px and upward, continuously** — with 1280 as a hard edge to check explicitly.
+What actually reflows above the floor is the **54 `minmax()` grid tracks** — table columns and
+card grids. Two or three wider widths exercise those. Below 1280px, the only correct behaviour is
+a horizontal scrollbar.
+
+`AGENTS.md` fidelity checklist item 1 carries the same guidance.
 
 ## Provenance
 

@@ -62,8 +62,23 @@ non-Gotham font — so **the prototype violates its own design system's rules wh
 So: does the Workspace adopt the PROLOOK design system, in whole or in part, or does it stay on
 the prototype's values?
 
-See `docs/divergences.md` DIV-001, and the clustered colour mapping in the same file which is
-built so this can be answered by reading a table.
+**Third, and the part that may settle the rest: is the coupling between the UI's accent colours
+and the garment catalogue intentional?**
+
+`PROLOOK_COLORS` is not a UI palette — it is the apparel colour catalogue, the colours a customer
+can order a uniform in. But the interface is partly coloured out of it: `#e1251b` is the garment
+colour **"Red"**, `#1f9d55` is **"Kelly Green"**, `#2563eb` is **"Azure Royal"**, `#e8590c` is
+**"Orange"**.
+
+So adopting the design system's `--red-500` (`#ef4444`) would not be a token swap. It would
+**decouple the interface from the colours the company actually sells.** That may be deliberate and
+load-bearing, or it may be incidental — nobody has said.
+
+**If it is intentional, design-system adoption is partly off the table regardless of what anyone
+decides about grey ramps**, and that reframes this entire question. Please answer this part first.
+
+See `docs/divergences.md` DIV-005 for the three-way mapping, built so this can be answered by
+reading a table.
 
 **What this blocks — accurately.** It does **not** block building. Fidelity wins: we match the
 prototype's values, not the design system's rules. What it blocks is only the **values** in
@@ -251,3 +266,23 @@ loads of the prototype itself and always will.
 `src/mock-data/` uses **fixed fixtures**: capture one observed load, record the values, freeze
 them. Each fixture file notes that its source was randomised and that the values are one frozen
 sample.
+
+---
+
+## Informational — no decision needed, recorded for the dev team
+
+Not blocking anything. Listed so they are not rediscovered as defects, and so design can pick them
+up post-MVP if it wants to.
+
+### INF-01 · The design has no type scale
+26 distinct font sizes including seven half-pixel values (9.5, 10.5, 11.5, 12.5, 13.5, 14.5,
+15.5). `12.5px` is used **332 times** — more than 14px. There is no ratio and no base step.
+
+**Left unresolved deliberately.** Inventing a scale would be exactly the silent improvement this
+project exists to avoid, and rounding `12.5 → 13` would shift text metrics on hundreds of
+elements. All 26 sizes are reproduced in `_typography.scss`.
+
+Same reasoning for: the **17 near-duplicate greys** with no semantic distinction between them, and
+the **63 distinct box-shadows**, most used once, in two different tints.
+
+**Post-MVP question for design**, not an MVP blocker. See `docs/divergences.md` DIV-006.

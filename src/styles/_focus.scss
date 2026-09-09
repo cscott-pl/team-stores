@@ -1,0 +1,72 @@
+// =============================================================================
+// Focus treatment
+// =============================================================================
+//
+// AUTHORISED DEVIATION FROM THE PROTOTYPE — see docs/divergences.md DIV-007.
+//
+// The prototype suppresses focus outlines in 32+ places (`outline: 0`,
+// `outline: none`) with no visible replacement. `CLAUDE.md` requires visible
+// focus and keyboard operability, so we restore it.
+//
+// WHY `:focus-visible` AND NOT `:focus`
+// -------------------------------------
+// `:focus-visible` matches only when the browser judges a focus ring should be
+// shown — keyboard navigation, essentially. A mouse click on a button does not
+// match it.
+//
+// So the ring appears for keyboard users, and pointer interaction renders
+// BYTE-IDENTICAL to the prototype. That keeps the visual diff at zero for the
+// side-by-side comparison everyone will actually run, while fixing the defect.
+// Using `:focus` instead would put a ring on every clicked button and show up
+// as a fidelity regression in every screenshot.
+//
+// ONE CONSISTENT TREATMENT, BUILT FROM EXISTING TOKENS
+// ---------------------------------------------------
+// No new colours. `--focus-ring` is the prototype's own value, taken from the
+// dc.html `:root` block: rgba(225, 37, 27, 0.18) — the brand red at 18%.
+// =============================================================================
+
+@use "tokens";
+
+// The single focus treatment. Applied globally below; also exposed as a mixin
+// for components that need to attach it to an inner element (e.g. a custom
+// control whose focusable node is not the visually-focused one).
+@mixin focus-ring($offset: 2px) {
+  outline: 2px solid var(--action-danger);
+  outline-offset: $offset;
+  border-radius: inherit;
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
+// Tight variant — for controls sitting flush against an edge or inside a dense
+// table row, where a 2px offset would collide with a neighbour.
+@mixin focus-ring-inset {
+  outline: 2px solid var(--action-danger);
+  outline-offset: -2px;
+  box-shadow: none;
+}
+
+// -----------------------------------------------------------------------------
+// Global application
+// -----------------------------------------------------------------------------
+// Everything natively focusable, plus anything given an explicit tabindex.
+// Deliberately broad: the prototype's suppression was broad too, and a
+// per-component opt-in would leave gaps nobody notices until an audit.
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  @include focus-ring;
+}
+
+// `:where()` keeps specificity at zero, so any component that needs a different
+// treatment overrides it without `!important` and without a specificity war.
+
+// Never reintroduce a bare `outline: none` / `outline: 0`. If a component must
+// suppress the default ring — because it draws its own — it replaces it in the
+// same rule:
+//
+//   .thing:focus-visible {
+//     outline: none;              // ok ONLY with a visible replacement below
+//     box-shadow: 0 0 0 3px var(--focus-ring);
+//   }
+//
+// Suppression with no replacement is the defect this file exists to fix.

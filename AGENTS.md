@@ -43,13 +43,20 @@ Every report states:
 Against the deployed Workspace, for every view, panel, tab, modal and overlay:
 
 1. Side-by-side at the design's supported widths — layout, spacing, sizing, typography, colour
-   and state all match. **Not displayed numbers.** The prototype's seed revenue is
-   `Math.random()`-generated (`workspace-app.jsx:27918`) and feeds the Overview KPIs, and dates are
-   `Date.now()`-relative, so values differ between two loads of the prototype itself. Compare
-   layout and formatting, never the figures. `src/mock-data/` uses fixed fixtures so our own
-   comparisons stay stable. See OQ-P17.
-   The design's supported widths are **1280px and upward, continuously** — 1280 is a hard floor
-   the design sets itself, and there are no named breakpoints to test at. See
+   and state all match. **Not displayed numbers.** Seed revenue is `Math.random()`-generated
+   (`workspace-app.jsx:27918`) and feeds the Overview KPIs; dates are `Date.now()`-relative. Values
+   differ between two loads of the prototype itself, so compare layout and formatting, never the
+   figures. `src/mock-data/` uses fixed fixtures so our own comparisons stay stable (OQ-P17).
+
+   **Which widths.** Compare at **1280px — the floor the design sets itself** — plus two or three
+   wider widths, enough to exercise the 54 `minmax()` grid tracks that reflow the tables and card
+   grids. Do **not** sweep continuously: there is no fluid type system to test. The only CSS
+   `clamp()` in the product — 12 expressions — sits in the four pre-authentication screens
+   (`FeatureGate`, `AccessApplyForm`, `AccessPending`, `StripeVerifying`), which the default
+   `hasStoreAccess: true` never reaches. The Workspace proper is fixed-pixel above the floor.
+   The `vw` values are modal overflow guards, not fluid layout, and the fluid tokens in
+   `_tokens.scss` are scoped and labelled so they are not applied Workspace-wide.
+   Below 1280px the only correct behaviour is a horizontal scrollbar. See
    `docs/architecture/responsive-strategy.md`.
 2. Every interactive element behaves identically: hover, focus, active, disabled, selected
 3. Every flow that starts and ends inside the Workspace completes end to end

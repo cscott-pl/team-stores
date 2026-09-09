@@ -291,7 +291,7 @@ dev handoff is worse than a documented deviation. All three changes are invisibl
 |---|---|---|
 | 1 | **18 `href="#"` anchors** carrying `onClick` — functional controls wearing the wrong element | real `<button>` where the behaviour is an action; a real `href` where it is navigation; the two email anchors become `mailto:`. Default styling neutralised in SCSS. Full line-by-line list in `docs/architecture/interaction-inventory.md` §2. |
 | 2 | **The three primary nav links expose no accessible name** — `link [ref_6] href="#"` with no label, while the store side-nav buttons are correctly named | accessible names added |
-| 3 | **Focus outlines suppressed** — `outline: 0` / `outline: none` in 32+ places with no visible replacement | visible focus restored, styled with `--focus-ring` |
+| 3 | **Focus outlines suppressed** — `outline: 0` / `outline: none` in 32+ places with no visible replacement | visible focus restored in `src/styles/_focus.scss`, built from existing tokens. Scoped to **`:focus-visible`**, not `:focus`, so the ring shows for keyboard users and **pointer interaction renders byte-identical to the prototype** — the visual diff for the side-by-side comparison stays at zero. |
 
 Each instance gets a line in this table as it is converted.
 
