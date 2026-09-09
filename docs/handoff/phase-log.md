@@ -17,18 +17,21 @@ Mapped the in-scope design before touching anything.
 **Findings that shaped later work:**
 
 - `Team Stores Workspace.dc.html` is a **46-line loader**, not the UI. All of it lives in
-  `workspace-app.jsx`: **33,939 lines, 514 top-level components**, a **22-value** `screen` state
-  machine, **57 modals**, 5 drawers, 4 overlays, 9 panels, 5 pages, 6 views, 5 tabs.
+  `workspace-app.jsx`: **33,939 lines**, ~~514 top-level components~~ → **512 components + 160
+  data constants** *(corrected in Phase 2)*, a **22-value** `screen` state machine, **57 modals**,
+  5 drawers, 4 overlays, 9 panels, 5 pages, 6 views, 5 tabs.
 - **Styling is ~99% inline:** 5,616 `style={{…}}`, 150 `style={expr}`, **31** `className=`,
   15 in-JSX `<style>` blocks (13 of them a single `@keyframes`). **6,116 hex literals / 364
   distinct**, 350 `rgba()`, and `var(--…)` referenced **once**.
-- **One `@media` query, and it is `prefers-reduced-motion`.** No layout breakpoints. See
-  `docs/architecture/responsive-strategy.md`.
+- **One `@media` query, and it is `prefers-reduced-motion`.** No layout breakpoints — but the
+  design **does** floor the layout at `minWidth: 1280`, which this pass missed *(corrected in
+  Phase 2)*. See `docs/architecture/responsive-strategy.md`.
 - **579 `useState`, 127 `useEffect`**, 31 `localStorage` and 2 `sessionStorage` writes, and **22
   `window.__*` globals** used for cross-component routing.
 - **Persisted first-run state** (`prolook_is_first_store`, `ts_setup_guide_seen_v1`,
   `ts_sso_welcomed`) makes several screens one-shot — clear site data before each fidelity check.
-- **Link-isolated:** 18 dead `href="#"` anchors and 2 `window.open` calls to
+- **Link-isolated:** 18 `href="#"` anchors — described here as "dead", but they carry `onClick`
+  handlers and are **functional** *(corrected in Phase 2)* — and 2 `window.open` calls to
   `customizer.prolook.com`. **No links to Landing, Storefront, Documentation or the Third-Party
   variant**, so the scope boundary costs nothing.
 - **Assets:** `assets/` holds 262 files; `products/` (228) and `sport-cards/` (22) are reached via
