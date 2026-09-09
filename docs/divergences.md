@@ -13,6 +13,7 @@ divergence logged here is a question for review, not a defect to fix.
 | [DIV-001](#div-001) | `_ds/` design system vs. prototype | 2026-09-08 |
 | [DIV-002](#div-002) | Export's own `CLAUDE.md` vs. repo scope | 2026-09-08 |
 | [DIV-003](#div-003) | `handoff/` conversion vs. prototype | 2026-09-08 |
+| [DIV-004](#div-004) | PROLOOK design system is React vs. Vue target | 2026-09-09 |
 
 ---
 
@@ -99,3 +100,51 @@ deployed Workspace," and the only thing currently deployed is the rejected Vue b
 says the deployed *prototype* wins. These should be read as the Claude Design prototype in
 `reference/`, not the Netlify build — but the wording is worth tightening before screen work
 starts.
+
+---
+
+## DIV-004
+
+**The PROLOOK design system is React; the Workspace target is Vue.**
+
+`reference/_ds/prolook-design-system-c88ba952-1dca-427e-ae7f-71dec59f9459/` is a **React**
+component library, unambiguously:
+
+| Signal | Count in `_ds_bundle.js` |
+|---|---|
+| `React` | 6,889 |
+| `createElement` | 6,884 |
+| `jsx` | 812 |
+| `Vue` / `defineComponent` | **0** |
+
+All 202 `sourcePath` values in `_ds_manifest.json` are `.jsx` (`components/core/Avatar.jsx`,
+`components/figma/Alert.jsx`, …), and `_adherence.oxlintrc.json` declares
+`"plugins": ["react", "import"]` with JSX-selector rules such as
+`JSXOpeningElement[name.name='AccountLineItem']`.
+
+Its readme claims it "Powers the account area, apparel customizer, team stores and ordering
+flows" — i.e. it presents itself as the platform's design system. Meanwhile the agreed direction
+for the core application is Vue (see `docs/architecture/toolchain-decisions.md` for that claim's
+provenance).
+
+**Why this is probably not evidence about Core, and must not be read as such.** Three things
+indicate a design-time artifact generated for the prototype rather than a dependency Core
+installs:
+
+- **Consumption is a browser global.** Setup is `<link rel="stylesheet">` + `<script src>` +
+  `window.PROLOOKDesignSystem_c88ba9`. The bundle contains **zero** `module.exports`,
+  `export default`, `exports.`, `define(` or `import(`. That is exactly what Claude Design's
+  `<x-import>` needs, and not how a Laravel/Inertia/Vite app consumes a design system.
+- **It is not installable** — no `package.json` anywhere in the export.
+- **It is Figma-derived.** `components/figma/` holds what the readme calls "202 Figma-extracted
+  components", and the bundle opens with a generator envelope: `/* @ds-bundle: {"format":3,…}`.
+
+**Consequence:** the React/Vue mismatch is recorded, not resolved, and it is **not** treated as
+an argument for Vue 2, for React, or against the Vue direction. What it does mean is that "the
+platform is Vue" is less settled than the repo's docs imply, and that if the real PROLOOK design
+system is React, adopting it (OQ-B02) would mean porting components, not importing them.
+
+**Useful residue:** the DS component names are shared vocabulary between design and the dev team
+even though the code is not reusable here. The correspondence with prototype components is
+catalogued in `docs/architecture/component-catalog.md` §"Design-system name correspondence" and
+used to justify component boundaries — not as a source of truth.

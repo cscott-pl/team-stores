@@ -4,8 +4,11 @@ Routes, state, data flow, conventions, and the pinned toolchain versions.
 
 ## Contents
 
-- [`responsive-strategy.md`](responsive-strategy.md) — **decided.** Fluid, not breakpoint-based;
-  closes `REPO-SETUP.md` default decision 6.
+- [`responsive-strategy.md`](responsive-strategy.md) — **decided.** Desktop-only, floored at
+  1280px, fluid above it, no breakpoints. Closes `REPO-SETUP.md` default decision 6.
+- [`toolchain-decisions.md`](toolchain-decisions.md) — **decided/provisional.** Vue 3 provisional
+  and why it is *not* inferred from Core's stack; SCSS settled and closed; provenance of the two
+  claims that come from outside this repo.
 
 ## Still to write
 
@@ -14,7 +17,6 @@ than invented later.
 
 | Document | Covers | Waiting on |
 |---|---|---|
-| `pinned-versions.md` | Vue, Vite, Node, TypeScript, SCSS compiler, and TS-vs-JS — **with the reason**, per `REPO-SETUP.md` | OQ-B03, owner Jowin |
 | `routing.md` | Route table, one route per Workspace screen; why there is no central `screen` switch | scaffolding |
 | `state.md` | Pinia store boundaries; getters-and-actions rule; store lifecycle transitions as the only sanctioned status change | scaffolding |
 | `data-flow.md` | How a screen gets data: component → store → `src/services/` → `src/mock-data/`, and why nothing skips the seam | scaffolding |

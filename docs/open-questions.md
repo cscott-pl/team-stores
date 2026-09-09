@@ -6,8 +6,9 @@ these.**
 
 Two kinds of entry:
 
-- **`OQ-B*` — blocking.** Named work cannot start until answered. Each records an owner and what
-  it blocks.
+- **`OQ-B*` — blocking or formerly blocking.** Each records an owner and, accurately, what it
+  blocks. Two of the three no longer block building — read the "what this blocks" line rather
+  than assuming the prefix means stopped.
 - **`OQ-P*` — product/design.** Answer needed before the affected screen is built, but nothing is
   blocked today.
 
@@ -37,51 +38,75 @@ or convert `reference/workspace-app-integrated.jsx`, on the assumption of either
 
 ---
 
-### OQ-B02 · Typography and design system — Gotham or Inter/Archivo?
+### OQ-B02 · Does the Workspace adopt the PROLOOK design system at all?
 
 **Owner:** Connor
-**Raised:** 2026-09-08 · **Status:** open — **blocking**
+**Raised:** 2026-09-08 · **Restated:** 2026-09-09 · **Status:** open
 
-Three parts:
+**Restated, because it is much bigger than typography.** The original framing — "Gotham or
+Inter/Archivo" — was too narrow. The real question covers **colour, spacing, radii, shadows and
+motion**, not just type.
 
-1. The export ships a PROLOOK design system (`reference/_ds/`) with 18 Gotham `.otf` faces. The
-   prototype ignores it and loads **Inter, Archivo and JetBrains Mono from Google Fonts**. Which
-   is authoritative?
-2. Is a **runtime Google Fonts dependency acceptable for internal authenticated tooling**? It is
-   a third-party request on every load, and it is a hard dependency of the current prototype.
-3. Where do tokens come from — `_ds/`, the dc.html `:root` block of 21 tokens, or the 364 distinct
-   hex values actually rendered? The prototype uses `var(--…)` once in 33,939 lines and hard-codes
-   6,116 hex literals, so it does not follow its own token block either.
+`reference/_ds/` ships a complete design system: **547 tokens** across
+`tokens/{fonts,colors,typography,spacing}.css` — a Tailwind Zinc ramp (`--zinc-50`…`--zinc-950`),
+near-black `#09090B`, `--red-500` as the sole accent doubling as destructive, semantic
+`--text-primary/secondary/muted`, `--surface-page/card/subtle`, `--border-default/strong`,
+`--radius-sm/md/lg/full`, `--shadow-xs/md/modal`, motion at 120–200 ms on
+`cubic-bezier(0.2,0,0,1)`, and Gotham at Book 400 / Medium 500 / Bold 700.
 
-See `docs/divergences.md` DIV-001.
+The prototype uses **none of it**: 364 distinct hex literals across 6,116 occurrences, Inter and
+Archivo from Google Fonts, and `var(--…)` referenced once in 33,939 lines. It ships its own
+adherence lint config (`_adherence.oxlintrc.json`) whose rules forbid raw hex, raw px and any
+non-Gotham font — so **the prototype violates its own design system's rules wholesale**.
 
-**Blocks:** `src/styles/_tokens.scss` — **step 2 of the `AGENTS.md` build order**, and therefore
-everything after it. This is the first thing the build order asks for, so it is blocking now, not
-pending.
+So: does the Workspace adopt the PROLOOK design system, in whole or in part, or does it stay on
+the prototype's values?
+
+See `docs/divergences.md` DIV-001, and the clustered colour mapping in the same file which is
+built so this can be answered by reading a table.
+
+**What this blocks — accurately.** It does **not** block building. Fidelity wins: we match the
+prototype's values, not the design system's rules. What it blocks is only the **values** in
+`src/styles/_tokens.scss` and `_typography.scss`.
+
+Token *names* are deliberately taken from the DS's semantic vocabulary (`--text-primary`,
+`--surface-card`, `--border-default`, `--radius-md`, `--shadow-modal`, …) with the prototype's
+values inside them. Adoption later is therefore a change of values in one file — no renaming, no
+component edits. Where the prototype needs something the DS has no name for, a name is invented
+in the same style and flagged; those flags are the places where adoption would genuinely need
+design input.
+
+**Not to be pre-empted:** do not "fix" hex literals into DS tokens, do not swap fonts, and do not
+adopt the DS lint config. The DS is a divergence to document, not a standard to comply with.
 
 ---
 
-### OQ-B03 · Core's pinned toolchain versions
+### OQ-B03 · Is Core on Vue 2 or Vue 3?
 
 **Owner:** Jowin
-**Raised:** 2026-09-08 · **Status:** open — **blocking**
+**Raised:** 2026-09-08 · **Narrowed:** 2026-09-09 · **Status:** open — no longer blocking
 
-Needed: pinned versions for **Vue, Vite, Node, TypeScript and the SCSS compiler**, and whether
-**Core is TypeScript or plain JavaScript**.
+**Narrowed from five versions to two questions:**
 
-`REPO-SETUP.md` calls this "the one decision that is expensive to reverse": installing latest
-(Vite 8, TypeScript 7, vue-router 5, Pinia 4) when Core is pinned several majors behind hands the
-prototype off with an upgrade project attached, and the architecture notes already flag Core's
-toolchain as older and memory-hungry to build. Pin to Core, not to latest.
+1. **Is Core on Vue 2 or Vue 3?**
+2. **Does Core use `@vitejs/plugin-vue` or `@vitejs/plugin-vue2`?** — the better question, because
+   their build config answers it without anyone having to characterise their stack.
 
-The TypeScript-vs-JavaScript answer also revisits `REPO-SETUP.md` default decision 1, which chose
-TypeScript on the grounds that it helps handoff — matching Core may matter more.
+Also wanted, not blocking: **is Core TypeScript or plain JavaScript?**
 
-**Blocks:** `package.json`, `npm install`, `.nvmrc`, `vite.config.ts`, `tsconfig.json`,
-`eslint.config.js`, `.stylelintrc.json` — i.e. all scaffolding, and every phase after it. Record
-the answers and the reason in `docs/architecture/` when they land.
+**Why it narrowed.** What survives re-integration is the Vue SFCs and the SCSS; our Vite, Node
+and TypeScript versions barely do. So only the **Vue major** genuinely matters — it changes
+component syntax and API enough to make a port expensive.
 
----
+**Dropped from this question entirely:** the **SCSS compiler**, settled from the export rather
+than from Jowin. `reference/handoff/style/` is 45 `@use` and 0 `@import`, so the dev side is
+already on modern dart-sass modules. See `docs/architecture/toolchain-decisions.md`.
+
+**No longer blocking.** Scaffolding proceeds on **Vue 3, provisional**, chosen because it is
+where new work goes rather than inferred from Core's stack — Laravel + Inertia + Vite is
+consistent with both majors, so it never narrowed the binary. Hedges (`<script setup>`, plain
+Composition API, Vue-3-only features avoided where free) keep a Vue 2.7 port mechanical without
+contorting the code.
 
 ## Product and design
 
