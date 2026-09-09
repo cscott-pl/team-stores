@@ -463,3 +463,82 @@ as complete on these points.
    Stores session or the propagated Customizer session, and where the rep lands.
 3. **Per-team coach import** (Step 2 – Divisions & Teams, Epic E) — four sub-questions, explicitly
    *"not specified until… answered. Nothing in this step changes today."*
+
+---
+
+## DIV-014 · Two in-force specs disagree about whether store templates exist
+
+**This supersedes the confident reading recorded earlier in the cross-check.** Found on the second
+spec pass, 2026-09-09.
+
+| Spec | Modified | Says |
+|---|---|---|
+| [Template Store Creation](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4196925446) | Aug 21, 2026 | *"Store templates (both curated and **user-generated**) have been removed from the product entirely… retained for history only and **is not in force**."* |
+| [Store General Settings](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4154130493) | **Sep 02, 2026** | Epic D: *"the same card carries **Create Template** — saving this store's products, pricing, and settings as a reusable blueprint for future stores."* Also listed in the section table and the Schedule & Status summary — **four references**. |
+
+**The later page is not obviously stale.** Its amendment history records edits on **Aug 3, Aug 24,
+Aug 25, Aug 31 and Sep 2** — *four separate edits after the 20 August removal* — and the Create
+Template references survived every one. That is materially different from a single untouched page.
+
+### The prototype implements the removed feature, not the surviving one
+
+`CreateTemplateModal` (`workspace-app.jsx:6784`) saves `storeType`, `distributionModel`,
+`fundraisingEnabled` and product `blocks`, persisted to `localStorage` under
+`prolook_user_templates`. It carries **store configuration**, not just products — a
+**user-generated store template**, precisely the thing the removal note names.
+
+It is therefore *not* interchangeable with **Catalog Templates** (the Aug 31 rename of Product
+Packages), which are product sets authored from a catalog and explicitly *not* store
+configuration. The two features have confusingly similar names and the terminology collision is
+part of why this is hard to read.
+
+### What this changes
+
+An earlier revision of this file and of `docs/decisions-needed.md` presented "remove the three
+Create Template buttons" as a **high-confidence recommendation needing a one-line confirmation**.
+**That was wrong.** It rested on one spec while a more recently edited spec says the opposite, and
+the prototype agrees with the more recent one.
+
+**Downgraded to a genuine conflict for Connor to resolve** — see OQ-P14. Default is unchanged:
+keep the buttons exactly as they behave.
+
+**What is still settled:** the ~500 lines of template *destination* code are not ported. Both
+readings agree the interstitial entry path is gone, and the prototype already implements that.
+
+---
+
+## DIV-015 · Field locking after launch is an explicit spec-side TBD
+
+[Store General Settings](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4154130493), **Epic B —
+"Edit permissions by store state — TBD"** (read Sep 02, 2026):
+
+> **OPEN — to be determined:** the exact fields/inputs that lock after launch are *TBD* and must be
+> defined before build.
+
+So **OQ-P03 is half-answered**. The four lifecycle *states* and their transitions are fully
+specified in Store Status & Lifecycle. **Which fields lock after launch is not**, and the spec says
+so itself.
+
+The spec does name four deliberate exceptions that must stay editable on a live store — **Store
+Point of Contact**, the **ship-to destination address**, **Team Fundraising**, and the **manager
+collection** — each for the same reason: a live store must be correctable without a rebuild.
+
+**Consequence for us:** none today. The prototype applies no post-launch field locking, and
+reproducing that is correct until the spec is completed. Not a divergence — an absence on both
+sides.
+
+---
+
+## Second-pass agreements
+
+| Area | Spec | Prototype | Verdict |
+|---|---|---|---|
+| Archive location | Schedule & Status → **Danger Zone**, owner-only | `:18399` — *"Danger zone — owner only (Epic C)"*, inside the schedule section | **match** |
+| Close / Re-open | On the Store Status card, in Settings — not the header | `:18389–18392` Re-open Store / Close Store in `GeneralInfo` | **match** |
+| Close Report secondary entry | *"a View Close Report link… alongside Re-open Store"* | `:31192` — `// variant "settings" → Settings → Schedule & Status → Store Status card` | **match** |
+| Store Status Changed email | *"one email per change"*, names actor and prior status | `:29811` `status-changed` template with `{{prevStatus}}`, `{{newStatus}}`, `{{actor}}` | **match** |
+
+**One extra surface, not in the spec:** the prototype also offers **Archive** from the store card's
+kebab menu in the Stores list (`:3774`), wired to `onArchive` → `ArchiveStoreModal`. The spec
+places archiving only in the Settings Danger Zone. Minor, but it is a second destructive entry
+point the spec does not sanction.

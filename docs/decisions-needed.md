@@ -15,23 +15,30 @@ just changes the outcome.
 
 # Connor
 
-## 1. Remove three dead "Create Template" buttons? — *one line, please*
+## 1. Store templates — two of your specs disagree, and we can't tell which wins
 
-The spec says store templates were **removed from the product entirely on 20 August 2026**. The
-design already actioned half of that: Add Store goes straight to Step 1, exactly as the removal
-note requires. What survives is **three "Create Template" buttons** — on the store list, the
-account page, and the store dashboard — pointing at screens that can no longer be reached.
+| Spec | Last edited | Says |
+|---|---|---|
+| **Template Store Creation** | 21 Aug | store templates *"removed from the product entirely"*, *"not in force"* |
+| **Store General Settings** | **2 Sept** | still lists **Create Template** on the Store Status card — in four places |
 
-**We propose removing them. They are already non-functional, so removing them subtracts no
-behaviour** — only a dead affordance a rep can click to no effect.
+The Settings page was edited **four times after the removal** and kept the references each time,
+so we can't treat it as stale. **And the prototype agrees with it** — its Create Template saves
+store type, distribution model, fundraising and products, which is a *store* template, the exact
+thing the removal note names.
 
-Worth knowing: the design is **not** simply out of date. The export contains design-side files
-dated 1, 2 and 8 September — nineteen days of editing after the removal, and the buttons survived
-all of it. So this is either an oversight or deliberate retention, which is why we are asking
-rather than assuming.
+Watch the naming: a **store template** (removed?) is not a **Catalog Template** (the August rename
+of Product Packages, current). The two are easy to conflate and we may be seeing that.
 
-- **Default:** keep them exactly as they behave.
-- **Already decided:** the ~500 lines of template code are not being built.
+**Which page is in force?** If it's the removal, three buttons go. If it's Settings, they stay and
+the destination screens need building.
+
+- **Default:** keep the buttons exactly as they behave — present, styled, going nowhere.
+- **Settled either way:** we don't build the ~500 lines behind them, and the old "template or
+  scratch?" modal stays gone — both readings agree, and the prototype already does that.
+
+*(An earlier draft of this page put this at the top as a one-line confirmation to remove the
+buttons. That was based on one spec before we'd read the other — withdrawn.)*
 
 ## 2. Does the Workspace adopt the PROLOOK design system? — *the one that needs your judgement*
 

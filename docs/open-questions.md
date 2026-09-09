@@ -138,11 +138,18 @@ it models one primary brand per session without stating whether that is a constr
 Whether portfolio and cross-store views span brands or stay within one.
 **Affects:** the Overview dashboard, the all-stores Orders view, and cross-store pending orders.
 
-### OQ-P03 · Store lifecycle states and field locking
-The full state list, the legal transitions, and which fields lock after launch.
-**Affects:** store status controls, the launch flow, and the edit modals.
-**Note:** `CLAUDE.md` is explicit that the previous attempt's store lifecycle state list must
-**not** be carried over on trust — verify against the current MVP Specs first.
+### OQ-P03 · Store lifecycle states and field locking — **half answered 2026-09-09**
+**States and transitions: ANSWERED.** [Store Status & Lifecycle](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4168908810)
+(Aug 31, 2026) specifies four states — Draft / Open / Closed / Archived — with a full transition
+table and a per-surface behaviour matrix. Cited in `docs/features/README.md`. Note the prototype
+diverges on two points: DIV-009 (rep can un-archive to Draft) and DIV-012 (vocabulary).
+
+**Field locking after launch: STILL OPEN — and the spec says so itself.** Store General Settings
+Epic B is titled *"Edit permissions by store state — TBD"* and states the locking fields *"are TBD
+and must be defined before build"*. Four exceptions are named as always-editable: Store Point of
+Contact, ship-to destination address, Team Fundraising, and the manager collection.
+**Affects:** nothing today — the prototype applies no post-launch locking, and reproducing that is
+correct until the spec is finished. See DIV-015.
 
 ### OQ-P04 · Closed-store edit semantics
 Whether a closed store stages edits until reopened rather than publishing live.
@@ -222,32 +229,33 @@ and its only feedback rule is for success: *"when it finishes, then a toast conf
 So the gap is real on the spec side too, not just the prototype's. Recorded as a note to the dev
 team in `docs/service-layers/README.md` rather than as UI for us to invent.
 
-### OQ-P14 · Remove the three template entry points? — **RECOMMENDATION, needs one line**
-**Owner:** Connor · **Status:** open — **highest-confidence item on the list**
+### OQ-P14 · Store templates — **two in-force specs disagree**
+**Owner:** Connor · **Status:** open — **corrected 2026-09-09, second spec pass**
 
-**The spec is unambiguous.** [Template Store Creation](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4196925446)
-(read Aug 21, 2026): *"Removed from scope — August 20, 2026. Store templates (both curated and
-user-generated) have been removed from the product entirely… This page is retained for history
-only and **is not in force**."*
+> **This entry previously read as a high-confidence recommendation needing a one-line
+> confirmation. That was wrong** — it rested on one spec without having read the other.
 
-**The design already actioned half of it.** *"Add Store now enters Step 1 — Basics directly; there
-is no interstitial choice modal"* — and that is exactly what the prototype does.
-`StoreTemplateInterstitial` is defined and never mounted. What survives is only the **three
-outbound "Create Template" buttons** (`onCreateTemplate`, wired from `StoreList`,
-`AccountProfile` and `Dashboard`) pointing at destination screens that cannot be reached.
+| Spec | Modified | Says |
+|---|---|---|
+| Template Store Creation | Aug 21, 2026 | store templates *"removed from the product entirely"*, *"not in force"* |
+| Store General Settings | **Sep 02, 2026** | Epic D still carries **Create Template** on the Store Status card — **four references** |
 
-**The prototype is not stale, so this is residue rather than disagreement.** The export contains
-design-side artifacts dated **2026-09-01, 09-02 and 09-08** — the design was actively edited for
-19 days after the removal, and the buttons survived every one of those sessions. It is either an
-oversight or deliberate retention.
+The later page had **four separate edits after the removal** (Aug 24, Aug 25, Aug 31, Sep 2) and
+the references survived all of them. It is not obviously stale.
 
-**We propose removing the three buttons. Please confirm.** They are already non-functional, so
-removing them **subtracts no behaviour** — only a dead affordance. One line is enough.
+**And the prototype agrees with the later page.** `CreateTemplateModal` saves `storeType`,
+`distributionModel`, `fundraisingEnabled` and product blocks to `prolook_user_templates` — store
+*configuration*, i.e. a user-generated **store template**, exactly the thing the removal note
+names. It is **not** a Catalog Template (the Aug 31 rename of Product Packages), which carries
+products only. The two names are confusingly close and that is part of why this is hard to read.
 
-**Default while waiting:** keep them exactly as they behave — present, styled, going nowhere.
-Faithful, and loses nothing.
+**The question for Connor:** which spec is in force? If Template Store Creation wins, the three
+Create Template buttons go. If Store General Settings wins, they stay and the destination needs
+building.
 
-**Already decided:** the ~500 lines of template code are not ported.
+**Default:** keep the buttons exactly as they behave — present, styled, going nowhere.
+**Still settled either way:** the ~500 lines of template destination code are not ported, and the
+interstitial entry path is gone (both readings agree; the prototype already implements that).
 
 ### OQ-P15 · TM portal and access screens — **access gate ANSWERED; portal still open**
 **Owner:** Connor · **Status:** partly resolved 2026-09-09
