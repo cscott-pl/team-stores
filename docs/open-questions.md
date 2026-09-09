@@ -133,11 +133,13 @@ inherits — record the answer rather than designing around a guess.
 
 ## Raised by this session, not on the original list
 
-### OQ-P10 · Is a minimum width wanted for the Workspace?
-The design specifies none, and the previous attempt's global `min-width: 1280px` is not carried
-forward — see `docs/architecture/responsive-strategy.md`. Building fluid with no floor reproduces
-the design faithfully, but whether a floor is *wanted* as a product decision is unanswered.
-**Affects:** global layout styles. Not blocking; the faithful default is to add no floor.
+### OQ-P10 · ~~Is a minimum width wanted for the Workspace?~~ — CLOSED 2026-09-09
+**Closed by evidence, not by decision.** This question rested on my incorrect finding that the
+design specifies no minimum width. It does: both application roots set `minWidth: 1280`
+(`reference/workspace-app.jsx:27423` and `:27476`), and the author's own comment at `:25764`
+reads *"Native iframe viewport — the App is min-width: 1280"*. The previous attempt's global
+`min-width: 1280px` was faithful reproduction, not an invention. Nothing to ask; see
+`docs/architecture/responsive-strategy.md`.
 
 ### OQ-P11 · "The deployed Workspace" is ambiguous in the fidelity checklist
 `AGENTS.md` item 1 says to compare against "the deployed Workspace," and the only deployment is
