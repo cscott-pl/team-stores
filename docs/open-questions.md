@@ -210,40 +210,62 @@ state, so nothing new appears on screen. We build **no** spinners, skeletons, re
 error banners the design never showed, and keep the single existing `LoadingOverlay` where the
 design has it.
 
-**Still open, for later:** once the seams are real, each needs loading and failure treatment, and
-the design specifies none. That is design work and it has not happened. Recorded as a note to the
-dev team in `docs/service-layers/README.md` rather than as UI for us to invent.
+**Still open, for later — and the specs confirm the gap rather than closing it.**
+[System Modals & Toasts](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802806) (read
+Sep 01, 2026) was the candidate to close this. It does not. Its registered inventory lists a
+single row — *"Global loading overlay | Informational | —"* — with **no owning spec and no
+behaviour specified**. Its four severity tiers are Informational, Confirmation, Consequence and
+**Blocking**, where Blocking means *"the action is not permitted in the current state"* — a state
+gate, not a failure. The words *error*, *failure* and *retry* do not appear anywhere on the page,
+and its only feedback rule is for success: *"when it finishes, then a toast confirms the outcome."*
 
-### OQ-P14 · Is the store-template feature a cut or an oversight? — **escalated**
-**Owner:** Connor · **Raised:** 2026-09-09 · **Status:** open — **product question**
+So the gap is real on the spec side too, not just the prototype's. Recorded as a note to the dev
+team in `docs/service-layers/README.md` rather than as UI for us to invent.
 
-~500 lines, fully built, **entirely unreachable**: `TemplateWorkspace` (286),
-`TemplateRepository` (78), `CreateTemplateModal`, `TemplateSummaryCard`,
-`StoreTemplateInterstitial`, the `Tpl*` set, and the wizard's template mode.
-`screen === "template"` / `"template-repo"` are read but never set; `setTemplateMode(true)` is
-never called.
+### OQ-P14 · Remove the three template entry points? — **RECOMMENDATION, needs one line**
+**Owner:** Connor · **Status:** open — **highest-confidence item on the list**
 
-**Decided for the build (2026-09-09):** the ~500 lines are **not ported** — reproducing them
-faithfully would mean reproducing something no user can see. The three live buttons that point at
-it (`onCreateTemplate` from `StoreList`, `AccountProfile`, `Dashboard`) **stay exactly as they
-behave now: present, styled, going nowhere.** That is what the prototype does. Not wired up, not
-removed.
+**The spec is unambiguous.** [Template Store Creation](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4196925446)
+(read Aug 21, 2026): *"Removed from scope — August 20, 2026. Store templates (both curated and
+user-generated) have been removed from the product entirely… This page is retained for history
+only and **is not in force**."*
 
-**Escalated as a product question:** a fully-built feature nobody can reach is either a cut or an
-oversight. **If it is in the MVP, the scope changes** — those ~500 lines come back and three dead
-buttons become live.
+**The design already actioned half of it.** *"Add Store now enters Step 1 — Basics directly; there
+is no interstitial choice modal"* — and that is exactly what the prototype does.
+`StoreTemplateInterstitial` is defined and never mounted. What survives is only the **three
+outbound "Create Template" buttons** (`onCreateTemplate`, wired from `StoreList`,
+`AccountProfile` and `Dashboard`) pointing at destination screens that cannot be reached.
 
-### OQ-P15 · Are the Team Manager portal and the access/gate screens in this repo's scope?
-Two surfaces that may not belong to the Workspace:
-- **`TeamManagerPortal`** (388 lines) — a *different persona's* view (team manager, not rep),
-  rendered over the Workspace via `window.__openTmPortal`.
-- **`FeatureGate` / `AccessApplyForm` / `StripeVerifying` / `AccessPending`** (~600 lines) —
-  pre-authentication surfaces. `CLAUDE.md` treats auth as an injected boundary, which suggests
-  these sit outside it.
+**The prototype is not stale, so this is residue rather than disagreement.** The export contains
+design-side artifacts dated **2026-09-01, 09-02 and 09-08** — the design was actively edited for
+19 days after the removal, and the buttons survived every one of those sessions. It is either an
+oversight or deliberate retention.
 
-They are in the in-scope file, so by the file-scope rule they are in scope; by the
-"auth is injected" and "Workspace is internal rep tooling" rules they may not be.
-**Affects:** feature folder structure and roughly 1,000 lines. **Owner:** Connor.
+**We propose removing the three buttons. Please confirm.** They are already non-functional, so
+removing them **subtracts no behaviour** — only a dead affordance. One line is enough.
+
+**Default while waiting:** keep them exactly as they behave — present, styled, going nowhere.
+Faithful, and loses nothing.
+
+**Already decided:** the ~500 lines of template code are not ported.
+
+### OQ-P15 · TM portal and access screens — **access gate ANSWERED; portal still open**
+**Owner:** Connor · **Status:** partly resolved 2026-09-09
+
+**The access / compliance gate is in the MVP.** [Access / Compliance Gate](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153016322)
+(read Aug 31, 2026) is a current, in-force spec with two personas, two epics, metrics and
+dependencies. It is not background. So `FeatureGate`, `AccessApplyForm` and the pending state are
+in scope — **build them.**
+
+Two caveats: the spec's mechanism is **manual admin review with a 24–48 hour turnaround**, which
+the prototype contradicts with instant Stripe verification (DIV-010); and `TWEAK_DEFAULTS` sets
+`hasStoreAccess: true`, so the flow is unreachable in the default state and needs the tweak
+flipped to review it.
+
+**Still open: the Team Manager portal** (`TeamManagerPortal`, ~390 lines, reached via
+`window.__openTmPortal`). No page in the MVP folder covers it, and it is a different persona's
+surface. Roster-Optional Architecture names team managers as users but specifies no portal.
+**Default:** build it, because it is in the file we were told to convert.
 
 ### OQ-P16 · ~~Which Tweaks-panel variant is canonical?~~ — **RESOLVED 2026-09-09**
 **Resolved without escalation.** Take whatever the panel produces untouched from cleared
@@ -286,3 +308,19 @@ Same reasoning for: the **17 near-duplicate greys** with no semantic distinction
 the **63 distinct box-shadows**, most used once, in two different tints.
 
 **Post-MVP question for design**, not an MVP blocker. See `docs/divergences.md` DIV-006.
+
+### OQ-P18 · The launch gate contradicts three specs — reproduce the defect or fix it?
+**Owner:** Connor · **Raised:** 2026-09-09 · **Status:** open
+
+The prototype lets a rep launch a store with only **draft** products
+(`canLaunch = (store.products || []).length > 0`). Three specs independently require **≥1
+*published* product**, and one gives the exact tooltip — *"Publish at least one product to launch
+your store."* The prototype's tooltip says *"Add at least one product."*
+
+**This is the first divergence where fidelity and correctness genuinely conflict.** Reproducing
+the prototype means shipping a store that can go live with an empty storefront — the precise
+failure the gate exists to prevent.
+
+**Default:** reproduce the prototype exactly and log it. Fidelity wins unless told otherwise.
+**If you say fix it:** one condition changes, plus the tooltip string. Invisible until a rep tries
+to launch a draft-only store. See `docs/divergences.md` DIV-008.

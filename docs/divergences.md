@@ -317,3 +317,149 @@ They stay in `reference/` untouched.
 Separately, and **not** covered by this decision: the ~500-line store-template feature is fully
 built but unreachable. It is not being ported either, but that is a product question rather than
 dead code, because three live buttons point at it — see **OQ-P14**.
+
+---
+
+# Spec ↔ prototype cross-check (2026-09-09)
+
+First pass. **Nine spec pages read in full**, prioritised by what unblocks a decision:
+Store Status & Lifecycle · Launch & Status Controls · Team Stores Workspace · Tabbed Store
+Dashboard · Template Store Creation · System Modals & Toasts · Step 2 – Divisions & Teams ·
+Access / Compliance Gate · Roster-Optional Architecture.
+
+Each claim below was verified on **both** sides — spec text and prototype source line.
+
+## A. Verified agreements — do not "fix" these
+
+Recorded because they look like divergences until checked, and a later pass could waste effort
+or, worse, change them.
+
+| Area | Spec | Prototype | Verdict |
+|---|---|---|---|
+| Workspace nav | Three tabs only: Overview / Stores / Stock Vault. "The Settings tab that appeared in the prototype is removed." | `TeamStoresHeader` renders exactly those three; `wsettings` reached from the account menu with `activeSubTab = "none"` | **match** — the design already actioned the Sep 1 amendment |
+| Account menu | Exactly My Account, Customizer, Orders, Workspace Settings, Logout, **in that order** | `AccountMenu` items in exactly that order and order of ids | **exact match** |
+| Settings sections | **Seven**, one (Catalog & Decoration) conditional on a third-party vendor | `StoreSettingsNav` has six static + `if (isMultiSourceStore(store)) items.push({id:"catalog", label:"Catalog & Decoration"})` | **exact match** |
+| Wizard steps | Individual = 3, League = 4 (Divisions & Teams inserted at 2) | `const baseSteps = wizardStepsFor(data.storeType)` — with a source comment reading *"the list is store-type dependent (League = 4 steps, Individual = 3). No hardcoded totals."* | **exact match** |
+| Structure editor | "must be extracted as a **single shared component**… must not be forked" | `TeamCanvasView` mounted twice — once with a `wizard` prop (`:8284`), once in `RosterTab` (`:13232`) | **match** |
+| Roster Bank | Capture → pre-group → commit staging area, per-team and store-wide queues | `BankZone`, `BankConflictModal`, `RosterBankRow`, `makeBankSeed`, `prolook_bank_captures_v1` | **built** |
+| Template entry path | "Add Store now enters Step 1 — Basics directly; there is no interstitial choice modal" | `goCreate` → `screen = "form"`; `StoreTemplateInterstitial` never mounted | **match** |
+
+> **Correction to an earlier finding.** I reported a "three-way disagreement" on the Settings
+> section count (six / six / seven). There is no disagreement: the count is **seven, one
+> conditional**, and the prototype implements exactly that. The apparent conflict was stale
+> summary text in the Store General Settings page's audit note, which the Sep 2 amendment to
+> Tabbed Store Dashboard explicitly corrects ("The two references to a six-section Settings tab
+> … are corrected to seven").
+
+## B. Prototype contradicts the spec
+
+### DIV-008 · The launch gate checks *any* product; three specs require a *published* one
+
+| | |
+|---|---|
+| **Spec** | Store Status & Lifecycle: *"Given a Draft store with **zero published products**, when the rep attempts to launch, then the launch action is disabled."* Launch & Status Controls gives the exact tooltip: *"Publish at least one product to launch your store."* Roster-Optional Architecture confirms it a third time: *"The launch gate stays product-based (≥1 published product)."* |
+| **Prototype** | `workspace-app.jsx:11041` — `const canLaunch = (store.products \|\| []).length > 0;` and `HomeTab`'s `onLaunch={() => {if ((store.products \|\| []).length) setShowLaunchModal(true);}}`. Tooltip reads *"Add at least one product to launch your store."* |
+| **Effect** | A store with only **draft** products can be launched, going live with nothing on the storefront — the exact failure the gate exists to prevent. |
+| **Note** | The prototype *has* the published-product concept — `deriveDone` at `:25956` uses `products.some(p => p.status === "published")` for the onboarding milestone. The gate simply wasn't switched to it. |
+
+**Fidelity tension.** This is the first divergence where reproducing the prototype means
+reproducing a defect three specs contradict. Flagged, not resolved — logged as **OQ-P18**.
+
+### DIV-009 · Archived → Draft is self-service in the prototype; the spec forbids it twice
+
+| | |
+|---|---|
+| **Spec** | *"Archived → Open or Closed: **Not self-service.** Requires a Prolook support request. Support staff only."* And separately: *"Open / Closed / Archived → Draft: **Not allowed.** Draft is the entry state only."* |
+| **Prototype** | `:27717` — `RestoreStoreModal` `onConfirm` → `updateStore(restoreTargetId, { status: "active", live: false, archived: false })`, toast *"Store restored — now a **draft** in your active stores"*. A rep does this unaided. |
+| **Effect** | Violates both rules at once: rep-initiated, and lands in Draft. |
+
+### DIV-010 · The access flow is instant and automated; the spec requires manual review
+
+| | |
+|---|---|
+| **Spec** | Access / Compliance Gate: submission → *"a 'pending review' state that clearly states verification is a **manual process** with a typical **24–48 hour** turnaround — access is *not* granted on submission"* → admin approve/deny. Stripe is never mentioned. |
+| **Prototype** | `access-form` → `StripeVerifying` → `unlockFromGate` — a `setTimeout(…, 1500)` at `:2321` then unconditional success. `screen === "access-pending"` is **read 3× and set 0×**: the pending state is built and unreachable. |
+| **Effect** | The prototype implements the opposite mechanism. It also explains the unreachable branch — the pending path was superseded by the Stripe path in the design. |
+
+### DIV-011 · Two setup guides and two paced-card shells run in parallel
+
+**Setup guide.** The Aug 31 amendment moved it *"from a single scrolling list of bullets to a
+paced card sequence"*. The prototype has **both**, simultaneously:
+
+| Implementation | Mounted | Seen-state | Matches spec? |
+|---|---|---|---|
+| `StoreGuideModal` — a single scrolling bullet list | yes, in `App()` | global `ts_setup_guide_seen_v1` | the **superseded** design |
+| `StoreSetupGuideHost` / `SgCover` / `SgCardView` — paced cards | yes, 2× | per-store `ts_setup_guide_seen_<id>` | the current design |
+| `SetupGuideHeaderButton` — the spec's "persistent entry point… to reopen" | **never mounted** | — | missing |
+
+The spec requires seen-state **per rep, per store type**, re-arming once for the other type.
+Neither implementation does that: one is global, the other per-store. **Three different models.**
+
+**Paced-card shell.** System Modals & Toasts is explicit: the Store Close Report and Store Setup
+Guide *"share one shell. This section owns that shell so the two do not drift."* The prototype has
+two parallel implementations — the `Cr*` set (`CrCover`, `CrHeroView`, `CrPanel`, …) and the `Sg*`
+set (`SgCover`, `SgCardView`, `SgMediaSlot`). They drifted exactly as the spec anticipated.
+**Conversion consequence:** build one shell with two consumers, not two shells.
+
+### DIV-012 · Status vocabulary disagrees three ways — including spec vs. spec
+
+| Source | Vocabulary |
+|---|---|
+| Store Status & Lifecycle (**Aug 31**, self-declared authoritative) | **Draft · Open · Closed · Archived**; badges Draft blue / Open green / Closed amber |
+| Launch & Status Controls (**Aug 3**) | **Draft · Active · On Hold**; Stores filter offers "Active" and "On Hold" |
+| Prototype | `status` ∈ `draft, active, live, closed, archived` — **five values** — plus separate `live` and `archived` booleans. Badge label is **"Active"**, not "Open" |
+
+The two specs conflict with each other, not just with the prototype. The Aug 31 page claims
+precedence ("All other features reference this section for status semantics"), which makes
+**Launch & Status Controls stale on terminology** — and it is also stale on templates, since it
+still specifies a post-launch *Create Template* menu that was removed 17 days later.
+
+The prototype's three overlapping fields for one four-state machine is a data-model concern for
+`docs/service-layers/`, not a visual divergence.
+
+### DIV-013 · Smaller confirmed mismatches
+
+- **Team Profit** — System Modals & Toasts (Sep 1) and Store Analytics both state *"Team Profit
+  has been removed from the product."* The prototype still mounts `TeamProfitChart`.
+- **Modal inventory** — the spec's registered inventory lists **19** modals; the prototype has
+  **57** `*Modal` components. The page intends the inventory to be complete ("this page records
+  that they exist"), so either it is incomplete or the prototype has 38 unregistered modals.
+- **Close Report seen-state** — spec: *per user, per close event*. Prototype: `crCanReplay` +
+  per-store key. No user dimension exists in a single-user prototype, so this is a seam note
+  rather than a visual fix.
+
+## C. Prototype behaviour no spec covers
+
+- **`TeamStoresPortal`** (`screen === "portal"`, four Tweaks-only variants). No spec page covers
+  it, and the prototype's own comment says the standalone Landing page replaced it.
+- **All Tweaks-panel variants** — 2 portal heroes × 3 headlines × 2 CTAs × 2 CTA colours, 2 wizard
+  accents, 3 checklist accents, 2 checklist positions. None specified anywhere. Defaults taken
+  per `docs/architecture/tweaks-defaults.md`.
+- **`MyCarts` and `SavedDesigns`** — the Customizer-bridge surfaces, reachable only via
+  `window.__openMyCarts` / `__openSavedDesigns`. No page in the MVP folder specifies them.
+- **`StoreTypeSelect`** — defined and never mounted, while both store types are specified.
+
+## D. Spec requirements with no prototype counterpart
+
+- **Order-approval queue** for Team Supplied items (Roster-Optional, Epic D; default off).
+- **Storefront team selector** and the tiered access gate — storefront surfaces, out of scope
+  here, but they replace roster-match gating and therefore change what the Workspace must
+  configure.
+- **Consequence-tier modals naming every affected record by name, never a bare count**, with
+  exempt records listed separately and their reason. Applies to the fundraising disable
+  interstitial and bundle-member removal. Not verified against the prototype in this pass.
+
+## E. Spec-side open questions — not ours to answer, but they block spec-derived work
+
+Three questions the specs themselves record as unresolved. Listing them so nobody treats a spec
+as complete on these points.
+
+1. **Consent / privacy — the spec calls it "build-blocking."** Roster-Optional Architecture:
+   capture-to-roster involves children's personal information, implicating COPPA-style and GDPR
+   parental-consent regimes, and *"the exact consent mechanism, retention, and parental-consent
+   handling must be confirmed with legal/privacy before the capture-to-roster flow ships."*
+   Owner: **legal / privacy**. The prototype has the Roster Bank built.
+2. **Logout session scope** (Team Stores Workspace, Epic D) — whether logout ends only the Team
+   Stores session or the propagated Customizer session, and where the rep lands.
+3. **Per-team coach import** (Step 2 – Divisions & Teams, Epic E) — four sub-questions, explicitly
+   *"not specified until… answered. Nothing in this step changes today."*

@@ -11,6 +11,25 @@ recorded as absent.
 
 ---
 
+## Spec citations (first pass, 2026-09-09)
+
+Nine spec pages read. Where a spec governs a screen below, it is cited here rather than repeated
+per row. Full index: `docs/specs-index.md`. Cross-check results: `docs/divergences.md`.
+
+| Screen / area | Governing spec | Verdict |
+|---|---|---|
+| `TeamStoresHeader`, 3 tabs, account menu | Team Stores Workspace (Sep 01) | **match** |
+| `dashboard` shell, 6 tabs, Setup Guide | Tabbed Store Dashboard (Sep 02) | tabs match; guide diverges — DIV-011 |
+| Settings 6+1 sections | Tabbed Store Dashboard (Sep 02) | **match** — seven, one conditional |
+| Store status, archive, close/re-open, Close Report | Store Status & Lifecycle (Aug 31) | vocabulary + restore diverge — DIV-009, DIV-012 |
+| Launch flow | Launch & Status Controls (Aug 03) | gate diverges — DIV-008; page is stale |
+| `form` wizard step count | Step 2 – Divisions & Teams (Sep 01) | **match** — 3 Individual / 4 League |
+| `gate`, `access-form`, `stripe-verify`, `access-pending` | Access / Compliance Gate (Aug 31) | **in MVP**; mechanism diverges — DIV-010 |
+| `roster` tab, Roster Bank | Roster-Optional Architecture (Aug 31) | Bank built; consent is spec-blocked |
+| All 57 modals, paced card shell | System Modals & Toasts (Sep 01) | 19 registered vs 57 built — DIV-013 |
+| `template`, `template-repo` | Template Store Creation (Aug 21) | **removed from scope 2026-08-20** |
+| `portal`, `MyCarts`, `SavedDesigns` | — none | uncovered — DIV-section C |
+
 ## How navigation actually works
 
 A single `screen` state value in `App()` (`:26940`) with **22 distinct values**, plus two nested
@@ -60,7 +79,7 @@ These return before the main tree; they sit between the brand site and the tools
 | C7 | `account` | — | `AccountProfile` (342 lines) | account menu |
 | C8 | `wsettings` | — | `WorkspaceSettings` | account menu |
 | C9 | `league-settings` | — | `LeagueSettings` (191 lines) | `list` → league Settings |
-| C10 | `form` | *(create flow)* | `CreateForm` — 6-step wizard | Add Store; or Vault multi-select → wizard with products pre-loaded |
+| C10 | `form` | *(create flow)* | `CreateForm` — **3 steps (Individual) / 4 steps (League)** via `wizardStepsFor(storeType)`. Six step components exist; `Step4Compliance` and `Step5Design` are never mounted. Matches the spec exactly. | Add Store; or Vault multi-select → wizard with products pre-loaded |
 | C11 | `template` | *(create flow)* | `TemplateWorkspace` | **nothing — unreachable** |
 | C12 | `template-repo` | *(create flow)* | `TemplateRepository` | **nothing — unreachable** |
 | C13 | `loading` | — | blank `div` + `LoadingOverlay` | transitional, during store creation |
@@ -91,7 +110,7 @@ Orders, Reports, Settings.
 | `products` | Products | `ProductsTab` (484 lines) | |
 | `orders` | Orders | `OrdersTabV2` (346 lines) | sub-tabs: **All Orders**, **Pending Orders** (with count) |
 | `payouts` | **Reports** | `PayoutsTab` | id and label differ — `payouts` renders "Reports" |
-| `general` | **Settings** | `GeneralInfo` (463 lines) + `CatalogPolicySection` | six sections, below |
+| `general` | **Settings** | `GeneralInfo` (463 lines) + `CatalogPolicySection` | **seven** sections, one conditional — below |
 
 Each tab except Home carries an unread **dot** (`!viewed.<tab>`) — a per-tab first-visit state.
 
@@ -105,6 +124,10 @@ Each tab except Home carries an unread **dot** (`!viewed.<tab>`) — a per-tab f
 | `customization` | Store Customization & Design | Storefront color & announcement |
 | `people` | People & Access | Invites & portal access |
 | `distribution` | Distribution & Fulfillment | Fulfillment method & destination |
+| `catalog` | Catalog & Decoration | Seller scope & art policy — **conditional**, pushed only when `isMultiSourceStore(store)` is true (a third-party vendor is enabled) |
+
+Seven in total, one conditional — **exactly what Tabbed Store Dashboard (Sep 02) specifies.** The
+default seed has no third-party vendor, so six render.
 
 ---
 

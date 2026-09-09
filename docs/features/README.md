@@ -69,15 +69,41 @@ folder where it does not belong.
   repo → OQ-P15.
 - **`team-manager-portal/`** — a different persona's surface entirely → OQ-P15.
 
-### Business rules seen but not yet cited
+### Business rules — citations from the first spec pass (2026-09-09)
+
+Nine spec pages read. These rules now have a source. Cite the page **and the last-modified date
+you read**, because the folder turns over fast.
+
+| Rule | Spec | Read |
+|---|---|---|
+| Store lifecycle states and transitions | [Store Status & Lifecycle](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4168908810) — Draft / Open / Closed / Archived, with a full transition table and per-surface behaviour matrix | Aug 31, 2026 |
+| Launch gate | Same page, Epic A + [Launch & Status Controls](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802774) — **≥1 *published* product**. The prototype checks any product; see DIV-008 | Aug 31 / Aug 03 |
+| Order-window auto-close | Store Status & Lifecycle, Epic C — pop-up stores auto-transition to Closed at the configured close moment | Aug 31, 2026 |
+| Store Close Report | Same page, Epic H — per close event, per-user seen state, PDF + CSV only | Aug 31, 2026 |
+| Archive semantics and owner-only visibility | Same page, Epic E | Aug 31, 2026 |
+| League vs Individual store fork | [Step 2 – Divisions & Teams](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4299325441) + [Roster-Optional Architecture](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4230545435) Epic B — 4 steps vs 3; division → team → optional roster | Sep 01 / Aug 31 |
+| `teamSetting` tiers (Fan / Team Required / Team Supplied) | Roster-Optional Architecture, Epic D — access keyed to financial risk, not roster match | Aug 31, 2026 |
+| Roster duplicate-number policy | Roster-Optional Architecture — **per roster, authoritative**, league-level setting acts as a cascading bulk default | Aug 31, 2026 |
+| Roster schema | Same page — **First and Last Name are the only required fields**; no contact channel required | Aug 31, 2026 |
+| Roster Bank capture → pre-group → commit | Same page, Epic C | Aug 31, 2026 |
+| Modal severity tiers and the registered inventory | [System Modals & Toasts](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802806) — Informational / Confirmation / Consequence / Blocking | Sep 01, 2026 |
+| Paced card sequence (shared shell) | Same page — one shell, two consumers | Sep 01, 2026 |
+| Access / compliance gate | [Access / Compliance Gate](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153016322) — manual admin review, 24–48 h. The prototype uses instant Stripe verification; see DIV-010 | Aug 31, 2026 |
+| Store templates | [Template Store Creation](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4196925446) — **removed from scope 2026-08-20, retained for history, "not in force"** | Aug 21, 2026 |
+
+### Still uncited — pages not yet read
 
 Present in the prototype and **not** to be carried over on trust. Each needs an MVP Specs citation
 before it becomes a pure function:
 
-store lifecycle states and transitions (OQ-P03) · order-window open/close scheduling and
-repeating close cadences · `teamSetting` semantics (`team-required` / `team-supplied` /
-`fan-gear`) · product status transitions (draft → published, unpublish warnings) · profit and
-price settings, bulk pricing, bundle pricing (OQ-P06) · tax mode and flat-rate handling (OQ-P05)
-· roster duplicate-name and jersey-number rules · minimum-quantity thresholds on pending orders ·
-fundraising enable/disable and reporting (OQ-P06) · league vs individual store differences
-(OQ-P08).
+Ten Workspace spec pages remain unread — Product Catalog Management, Order Management,
+All-Stores Orders, Roster Management, Store General Settings, Workspace Settings, Store Home,
+Step 1 – Basics, Step 2 – Add Products, Step 3 – Review & Deploy, Rep Account, Team Stores
+Platform Overview. The rules still uncited are the ones those pages own:
+
+product status transitions (draft → published, unpublish warnings) · profit and price settings,
+bulk pricing, bundle pricing (OQ-P06) · tax mode and flat-rate handling (OQ-P05) ·
+minimum-quantity thresholds on pending orders · fundraising enable/disable and the disable
+interstitial (OQ-P06) · repeating close cadences · order fulfilment and freight mapping (OQ-P07).
+
+**Expect most of these to resolve on the second pass** — dedicated pages exist for all of them.

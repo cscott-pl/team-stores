@@ -9,11 +9,19 @@ The **only permitted source of requirements**, per `CLAUDE.md`. Indexed 2026-09-
 other folder in the TS space. Out-of-scope, unvalidated and outdated respectively.
 
 **57 items — 52 pages and 5 sub-folders.** Titles, URLs and last-modified dates are as returned by
-Confluence; the summaries are Confluence's own.
+Confluence; the summaries are Confluence's own. Indexed **2026-09-09**; the most recently modified
+page (Store Home) was changed **2026-09-03, six days earlier**.
 
-> **Status: index only.** Nothing below has been read in depth yet. Scope column is a *provisional*
-> reading from titles and summaries, pending the cross-check against
-> `docs/architecture/workspace-screen-inventory.md`.
+> **Read status (first pass, 2026-09-09): 9 of 30 Workspace pages read in full**, prioritised by
+> what unblocks a decision. Marked **✅ read** below. Cross-check results are in
+> `docs/divergences.md` § "Spec ↔ prototype cross-check"; citations are attached in
+> `docs/features/README.md` and `docs/architecture/workspace-screen-inventory.md`.
+>
+> The 21 unread pages are mostly detail-level (products, orders, roster, settings interiors) rather
+> than decision-gating. Second pass should start with **Store General Settings** (owns the Store
+> Status card, archive Danger Zone and the fundraising interstitial), **Roster Management** (Epic 0
+> owns the structure model) and **Product Catalog Management** (largest feature, owns the
+> published-product concept behind DIV-008).
 
 ## Two standing cautions
 
@@ -43,9 +51,9 @@ Confluence; the summaries are Confluence's own.
 | Page | Modified | Maps to (inventory) |
 |---|---|---|
 | [Team Stores Platform Overview](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153049096) | Sep 02, 2026 | — architecture context |
-| [Team Stores Workspace](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153245697) | Sep 01, 2026 | `TeamStoresHeader`, 3 tabs |
+| ✅ [Team Stores Workspace](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153245697) | Sep 01, 2026 | `TeamStoresHeader`, 3 tabs |
 | [Store Home (Home Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4308860929) | **Sep 03, 2026** | dashboard `home` tab |
-| [Tabbed Store Dashboard](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153409540) | Sep 02, 2026 | `Dashboard`, 6 tabs |
+| ✅ [Tabbed Store Dashboard](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153409540) | Sep 02, 2026 | `Dashboard`, 6 tabs |
 | [Store General Settings (Settings Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4154130493) | Sep 02, 2026 | dashboard `general` tab |
 | [Workspace Settings](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4301389828) | Sep 01, 2026 | `wsettings` |
 | [Product Catalog Management (Products Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153376773) | Sep 01, 2026 | dashboard `products` tab |
@@ -59,19 +67,19 @@ Confluence; the summaries are Confluence's own.
 | [Top Performing Stores Leaderboard](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4152852486) | Jun 22, 2026 | overview leaderboard |
 | [Active Ordering Windows Monitor](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4152033291) | Jun 22, 2026 | `OrderingWindowRow` |
 | [Team Store Directory (Stores Tab)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153344001) | Aug 31, 2026 | `list` / `StoreList` |
-| [Store Status & Lifecycle](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4168908810) | Aug 31, 2026 | **OQ-P03** |
-| [Launch & Status Controls](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802774) | Aug 03, 2026 | `LaunchStoreModal`, `LiveStoreControls` |
+| ✅ [Store Status & Lifecycle](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4168908810) | Aug 31, 2026 | **OQ-P03** |
+| ✅ [Launch & Status Controls](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802774) | Aug 03, 2026 | `LaunchStoreModal`, `LiveStoreControls` |
 | [Step 1 - Basics](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4152164609) | Sep 02, 2026 | `Step1Basics` |
 | [Step 2 - Add Products](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4152000524) | Sep 01, 2026 | `Step3Products` |
-| [Step 2 - Divisions & Teams (League Stores)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4299325441) | Sep 01, 2026 | `Step2Structure` |
+| ✅ [Step 2 - Divisions & Teams (League Stores)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4299325441) | Sep 01, 2026 | `Step2Structure` |
 | [Step 3 - Review & Deploy](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153311250) | Aug 31, 2026 | `Step6Review` |
 | [Adding Customize Product (Brand Gated)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4186636289) | Jul 01, 2026 | `ChooseBrandModal` |
 | [Customizer & Picker Page](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153049277) | Jun 17, 2026 | `Customizer` |
 | [Rep Account & Brand Customizer Access](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4189650945) | Sep 01, 2026 | `AccountProfile` |
-| [Access / Compliance Gate](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153016322) | Aug 31, 2026 | `FeatureGate` — **OQ-P15** |
-| [System Modals & Toasts](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802806) | Sep 01, 2026 | 57 modals, `Toast` |
+| ✅ [Access / Compliance Gate](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153016322) | Aug 31, 2026 | `FeatureGate` — **OQ-P15** |
+| ✅ [System Modals & Toasts](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4153802806) | Sep 01, 2026 | 57 modals, `Toast` |
 | [System Emails](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4169138177) | Sep 01, 2026 | `EmailsSection` |
-| [Roster-Optional Architecture (Open Access Stores)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4230545435) | Aug 31, 2026 | **epic, approved for build** |
+| ✅ [Roster-Optional Architecture (Open Access Stores)](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4230545435) | Aug 31, 2026 | **epic, approved for build** |
 
 ## Storefront and landing — background only, not built from (21 pages)
 
@@ -110,14 +118,16 @@ reading during the cross-check.*
 
 | Page | Modified | Note |
 |---|---|---|
-| [Template Store Creation — Entry Gate & Curated Catalog](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4196925446) | Aug 21, 2026 | **"Removed from scope — August 20, 2026. Store templates (both curated and user-generated) have been removed from the product entirely."** See OQ-P14. |
+| ✅ [Template Store Creation — Entry Gate & Curated Catalog](https://qstrike.atlassian.net/wiki/spaces/TS/pages/4196925446) | Aug 21, 2026 | **"Removed from scope — August 20, 2026. Store templates (both curated and user-generated) have been removed from the product entirely."** See OQ-P14. |
 
 ---
 
 ## Provenance rules for citing these
 
-- Cite by **page title + URL + the last-modified date you read**. Specs are actively revised —
-  eleven pages changed in the eight days before this index was taken.
+- Cite by **page title + URL + the last-modified date you read**. Specs are actively revised:
+  **27 of the 57 items changed on or after 31 August 2026** — 7 on Aug 31, 11 on Sep 1, 8 on
+  Sep 2, and 1 on Sep 3 — i.e. **roughly half the folder turned over in the ten days before this
+  index was taken (2026-09-09)**. Treat any citation older than a couple of weeks as suspect.
 - A citation records what the spec said **on that date**. If behaviour and citation later
   disagree, re-read before assuming the code is wrong.
 - **Do not cite a page from any other folder**, including elsewhere in the TS space.

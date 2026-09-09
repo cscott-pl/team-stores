@@ -1,183 +1,191 @@
-# Decisions needed
+# Decisions needed — Connor and product/BA
 
-Everything currently waiting on a person, grouped by who can answer it.
+Everything waiting on a person, grouped by who can answer it. **Updated 2026-09-09** after reading
+nine MVP spec pages against the prototype.
 
-**Context, for a reader new to this:** we are rebuilding the Team Store Workspace as a Vue
-front end, matching an approved Claude Design prototype as closely as possible, to hand to the
-Core Dev team. Fidelity beats cleanliness — an unrequested improvement is indistinguishable from
-a regression. Every question below has a **default we will proceed with** if we hear nothing, so
-nothing is stalled. Answering just changes the outcome.
+**Context, for a reader new to this:** we are rebuilding the Team Store Workspace as a Vue front
+end, matching an approved design prototype as closely as possible, to hand to the Core Dev team.
+Fidelity beats cleanliness — an unrequested improvement is indistinguishable from a regression.
+**Every item has a default we proceed with if we hear nothing**, so nothing is stalled. Answering
+just changes the outcome.
 
-Reply inline, or to the owner. Last updated 2026-09-09.
+*Jowin's single toolchain question is in `docs/decisions-needed-jowin.md` — sent separately.*
 
 ---
 
-# Connor — design and product scope
+# Connor
 
-## 1. Does the Workspace adopt the PROLOOK design system? *(biggest one)*
+## 1. Remove three dead "Create Template" buttons? — *one line, please*
+
+The spec says store templates were **removed from the product entirely on 20 August 2026**. The
+design already actioned half of that: Add Store goes straight to Step 1, exactly as the removal
+note requires. What survives is **three "Create Template" buttons** — on the store list, the
+account page, and the store dashboard — pointing at screens that can no longer be reached.
+
+**We propose removing them. They are already non-functional, so removing them subtracts no
+behaviour** — only a dead affordance a rep can click to no effect.
+
+Worth knowing: the design is **not** simply out of date. The export contains design-side files
+dated 1, 2 and 8 September — nineteen days of editing after the removal, and the buttons survived
+all of it. So this is either an oversight or deliberate retention, which is why we are asking
+rather than assuming.
+
+- **Default:** keep them exactly as they behave.
+- **Already decided:** the ~500 lines of template code are not being built.
+
+## 2. Does the Workspace adopt the PROLOOK design system? — *the one that needs your judgement*
 
 The prototype and the design system disagree about nearly every colour, font and spacing value.
-The design system ships 547 tokens, Gotham, a Tailwind Zinc grey ramp and `--red-500` as its
-accent. The prototype uses Inter and Archivo from Google Fonts, 364 distinct hex values, and a
-different red.
 
 **Answer this part first:** the prototype's accent colours come from the **garment catalogue** —
 `#e1251b` is the apparel colour "Red", `#1f9d55` is "Kelly Green", `#2563eb` is "Azure Royal".
-Adopting the design system's red would decouple the interface from the colours the company
-actually sells. **Is that coupling intentional?** If yes, design-system adoption is partly off the
+Adopting the design system's red would **decouple the interface from the colours the company
+actually sells**. Is that coupling intentional? If yes, design-system adoption is partly off the
 table regardless of everything else, and the rest of this question changes shape.
 
-The strongest evidence that *something* needs deciding: the prototype runs **two grey ramps at
+The clearest evidence that *something* needs deciding: the prototype runs **two grey ramps at
 once**. Twelve values match the design system's Zinc ramp exactly; a second custom ramp sits
-alongside them, 5–13 ΔE away, doing the same jobs. That is not a decision anyone made.
+alongside them, 5–13 ΔE away, doing the same jobs. Nobody decided that.
 
-- **Blocks:** only the *values* in two files (`_tokens.scss`, `_typography.scss`). Not building.
-- **Default if no answer:** we match the prototype exactly, and name the tokens using the design
-  system's vocabulary. Adoption later is then a change of values in one file — no renaming, no
-  component edits.
-- **If you say "adopt the DS":** the Workspace changes appearance — different greys, different
-  red, Gotham instead of Inter/Archivo. That is a visible redesign, not a swap, and it would need
-  re-approval from whoever signed off the prototype.
-- **Where to look:** a clustered three-way colour table is in `docs/divergences.md` (DIV-005) —
-  built so this can be answered by reading it.
+- **Blocks:** only the *values* in two stylesheet files. Not building.
+- **Default:** match the prototype exactly, with tokens named using the design system's
+  vocabulary — so adopting later is a change of values in one file, no component edits.
+- **If you say adopt:** the Workspace changes appearance. That is a visible redesign needing
+  re-approval, not a swap.
+- **A table to answer from:** `docs/divergences.md`, DIV-005.
 
-## 2. Is the Third Party Integration Workspace variant in the MVP?
+## 3. The launch gate lets a rep go live with an empty storefront
+
+The prototype allows launching a store when **any** product exists, including drafts only. **Three
+separate specs** require at least one *published* product, and one gives the exact tooltip:
+*"Publish at least one product to launch your store."* The prototype says *"Add at least one
+product."*
+
+This is the first case where fidelity and correctness genuinely conflict — reproducing the
+prototype means reproducing a bug that lets a store go live with nothing buyers can see.
+
+- **Default:** reproduce the prototype and log it. Fidelity wins unless you say otherwise.
+- **If you say fix it:** one condition and one tooltip string. Invisible unless a rep tries it.
+
+## 4. Two setup guides are running at once
+
+The prototype contains **both** the old setup guide (a scrolling list of bullets) and the new one
+(the paced card sequence the spec now requires) — wired simultaneously, with different memory of
+whether you have seen it. The spec's "reopen from the header" button exists in the code but is
+never shown.
+
+- **Default:** build the **new** paced-card version, since it is what the current spec specifies,
+  and drop the old modal. Say so if you want the old one preserved.
+- **Related:** the spec requires one shared card-sequence shell for both this and the Store Close
+  Report. The prototype built two. We will build one.
+
+## 5. Is the Third Party Integration Workspace variant in the MVP?
 
 The design export contains a second Workspace variant, and its own instructions said every change
-must be mirrored into both. Our brief says the variant is out of scope. Both can't be right.
+must be mirrored into both. Our brief says it is out of scope. Both can't be right.
 
-- **Blocks:** the scope sections of three governing documents — **before any screen is built**, if
-  the variant is in.
-- **Default:** out of scope. We build one Workspace and do not read the variant.
-- **If it's in:** the scope definition changes and every screen gets built twice, in lockstep.
+- **Blocks:** the scope sections of three governing documents — **before any screen is built**.
+- **Default:** out of scope. One Workspace.
 
-## 3. Are the Team Manager portal and the access/gate screens ours?
+## 6. Is the Team Manager portal ours?
 
-Two surfaces sit inside the file we were given but may not belong to this project: a **Team
-Manager portal** (~390 lines — a different person's view entirely, not the rep's), and the
-**access / compliance gate** flow (~600 lines — the application form and Stripe verification a
-rep sees *before* they have access).
+A ~390-line surface for a *different person* — the team manager, not the rep — rendered over the
+Workspace. No page in the MVP specs folder covers it.
 
-- **Blocks:** folder structure, and roughly 1,000 lines of conversion work.
-- **Default:** build them, because they are in the file we were told to convert.
-- **If they're not ours:** we skip both. Note the gate flow is unreachable anyway in the default
-  state, and there is a spec for it in the MVP folder — so this may already be settled.
+- **Default:** build it, because it is in the file we were told to convert.
+- **Now answered, so no longer asked:** the access / compliance gate **is** in the MVP — it has a
+  current, in-force spec. We will build it. (Note its spec requires manual admin review with a
+  24–48 hour wait, while the prototype does instant Stripe verification — logged as DIV-010.)
 
-## 4. Loading and error states — the design has none *(not blocking)*
+## 7. Loading and error states — *not blocking, but nobody has designed them*
 
-The prototype has **no error state anywhere** and one loading spinner. Nothing in it is
-asynchronous, so nothing can fail. The real system will have both.
+The prototype has **no error state anywhere** and one loading spinner. We checked the spec that
+looked most likely to cover this; it doesn't — its modal inventory lists a single unspecified
+"Global loading overlay", and the words *error*, *failure* and *retry* appear nowhere on it.
 
-- **Blocks:** nothing today.
-- **Default:** we build no spinners, skeletons, retry buttons or error banners the design never
-  showed, and note against each backend seam that its loading and failure treatment is
-  unspecified.
-- **What's needed eventually:** design for those states, before the Core Dev team wires up real
-  data. Flagging now so it isn't discovered at integration.
+So the gap is real on both sides. The real system will need both.
 
-## 5. Two small ones
+- **Default:** build nothing the design never showed, and record against each backend seam that
+  its loading and failure treatment is unspecified.
+- **What's needed eventually:** design for those states, before Core wires up real data.
 
-**Which deployment is the fidelity reference?** Our checklist says compare against "the deployed
-Workspace", but the only thing deployed is the *previous, rejected* build. We read it as the
-Claude Design prototype. One line to confirm.
+## 8. Two small ones
+
+**Which deployment is the fidelity reference?** Our checklist says "the deployed Workspace", but
+the only thing deployed is the *previous, rejected* build. We read it as the design prototype. One
+line to confirm.
 
 **Where is the full design export archived?** We excluded 213 MB of unused files from the repo, so
-the complete export now exists only on one laptop. It needs a durable shared home, or
-"verifiable against what was approved" stops being true. Not urgent, permanently annoying if
-missed.
+the complete export now exists only on one laptop. Not urgent, permanently annoying if missed.
 
 ---
 
-# Jowin — toolchain
+# Product / BA
 
-## 6. Is Core on Vue 2 or Vue 3?
+## 9. Business rules still uncited — *shrinking*
 
-Originally five version questions; four are now settled or don't matter. What survives
-re-integration is the Vue components and the stylesheets, so only the **Vue major version**
-genuinely matters — Vue 2 and Vue 3 differ enough to make a port expensive.
+We are not allowed to implement business logic without citing a spec. After the first pass, most
+of the list has a source: store lifecycle, launch gate, auto-close, archive semantics, the
+League/Individual fork, roster schema and duplicate-number policy, the Roster Bank, modal severity
+tiers, and the access gate are all now cited.
 
-**The easiest way to answer: does your build config use `@vitejs/plugin-vue` or
-`@vitejs/plugin-vue2`?** That settles it without you having to describe anything.
+**Still uncited**, pending a second reading pass: product status transitions · profit, bulk and
+bundle pricing · tax mode and flat-rate handling · minimum-quantity thresholds · fundraising
+enable/disable · repeating close cadences · freight mapping.
 
-Also useful, not blocking: **is Core TypeScript or plain JavaScript?**
+Dedicated spec pages exist for all of them — **expect this to shrink again, not to become a
+question for you.**
 
-- **Blocks:** nothing right now — we are proceeding on Vue 3.
-- **Default:** Vue 3 at current stable, recorded as *provisional*. Chosen because it is where new
-  work goes and Vue 2 reached end-of-life at the end of 2023 — **not** inferred from your stack.
-  We are writing in a style that keeps a Vue 2.7 port mechanical.
-- **If Core is Vue 2:** a port is needed. Bounded, but real, and better known now than later.
-- **Already settled without you:** the SCSS toolchain. Your team's own earlier conversion uses
-  modern dart-sass module syntax (45 `@use`, zero `@import`), so we matched it. No question there.
+## 10. Open product questions the design doesn't answer
+
+Whether a rep or store ever spans more than one brand · whether cross-store views span brands ·
+whether a closed store stages edits until reopened · tax calculation (the prototype uses a
+placeholder) · payment, fundraising, fees and payouts including merchant-of-record · expected
+launch-day traffic.
+
+- **Default for all:** leave the prototype's behaviour untouched and flag it.
+- **Now answered by the specs, so removed from this list:** League vs Individual store types.
+  **Both are in the MVP**, with a specified fork — 3 wizard steps for Individual, 4 for League —
+  and the prototype already implements it exactly.
 
 ---
 
-# Product / BA — MVP scope
+# Not ours, but blocking — raised by the specs themselves
 
-## 7. Is the store-template feature in or out? *(probably already answered)*
+Three questions the MVP specs record as unresolved. Listed so nobody reads a spec as complete.
 
-The prototype contains a **complete, fully-built store-template feature — about 500 lines — that
-no user can reach.** Three live buttons point at it and go nowhere.
-
-A spec in the MVP folder says *"Removed from scope — August 20, 2026. Store templates (both
-curated and user-generated) have been removed from the product entirely."* **That appears to
-settle it — please confirm.**
-
-- **Default:** we do not build it. The three buttons stay exactly as they are: present, styled,
-  going nowhere, because that is what the prototype does.
-- **If it's actually in:** ~500 lines come back and three dead buttons become live.
-
-## 8. Business rules we can see but cannot cite
-
-The prototype implements a lot of working business logic. We are not allowed to carry it over on
-trust — each rule needs a citation to the MVP specs before it becomes code.
-
-Rules currently uncited: store lifecycle states and transitions · order-window scheduling and
-repeating close cadences · team-required / team-supplied / fan-gear semantics · product status
-transitions · profit, bulk and bundle pricing · tax mode and flat-rate handling · roster duplicate
-names and jersey numbers · minimum-quantity thresholds · fundraising enable/disable · league vs
-individual store differences.
-
-**Several of these probably already have specs** — we have just indexed 52 spec pages, including
-dedicated pages for store lifecycle, roster management and product catalog management, and have
-not yet read them in depth. **The next pass will either cite each rule or establish that nothing
-covers it.** This entry is here so the remainder has a home; expect it to shrink.
-
-- **Blocks:** writing those rules as code. Not blocking layout or component work.
-- **Default:** we reproduce the prototype's behaviour exactly and mark each rule uncited.
-
-## 9. Open product questions the design doesn't answer
-
-Recorded, not urgent, each affecting one area: whether a rep or store ever spans more than one
-brand · whether cross-store views span brands · whether a closed store stages edits until
-reopened · tax calculation (the prototype uses a placeholder) · payment, fundraising, fees and
-payouts including merchant-of-record · how products, orders and freight attach to rosters · league
-vs individual differences the design doesn't show · expected launch-day traffic.
-
-- **Default for all:** leave the prototype's current behaviour untouched and flag it.
+1. **Consent / privacy — the spec calls it "build-blocking."** The Roster-Optional epic captures
+   buyer and player details at checkout and surfaces them to a rep. Much of that data concerns
+   **children**, implicating COPPA-style and GDPR parental-consent rules. The spec states the
+   consent mechanism, retention and parental-consent handling **must be confirmed with
+   legal/privacy before the flow ships**. The prototype has the Roster Bank built.
+   **Owner: legal / privacy.**
+2. **Logout scope** — whether logging out ends only the Team Stores session or the Customizer
+   session it came from, and where the rep lands. **Owner: product.**
+3. **Per-team coach import** — four sub-questions the spec deliberately leaves open. **Owner:
+   product.**
 
 ---
 
 # Informational — no reply needed
 
-Recorded so they aren't rediscovered as bugs.
-
-- **The design has no type scale.** 26 font sizes including seven half-pixel values; `12.5px` is
-  used 332 times, more than 14px. Also 17 near-duplicate greys and 63 one-off shadows. We
-  reproduce all of it exactly — inventing a scale would be a silent redesign, and rounding
-  `12.5 → 13` would shift text on hundreds of elements. A post-MVP question for design.
-- **The Workspace is desktop-only, floored at 1280px.** The design sets that floor itself. No
-  breakpoints exist and none are being added.
-- **The prototype's numbers are random.** Seed revenue is generated per page load, so the
-  dashboard totals differ between two loads of the prototype itself. Fidelity comparison is on
-  layout, not figures.
-- **~680 lines of dead code** in the prototype — six components defined and never used. Not
-  ported.
-- **Three accessibility defects are being fixed**, all invisible: 18 links that should be buttons,
-  three nav items with no accessible name, and suppressed focus outlines in 32+ places. Logged as
-  intentional deviations.
-- **The design system is React**, while the target is Vue. It appears to be a design-time artifact
-  rather than something Core installs, so it is recorded rather than acted on.
+- **The design has no type scale.** 26 font sizes including seven half-pixel values; `12.5px` used
+  332 times. Also 17 near-duplicate greys and 63 one-off shadows. We reproduce all of it —
+  inventing a scale would be a silent redesign. A post-MVP question for design.
+- **Status vocabulary disagrees three ways.** The Aug 31 spec says Draft/Open/Closed/Archived; the
+  Aug 3 spec says Draft/Active/On Hold; the prototype uses five values plus two booleans. We
+  follow the prototype and have logged it. The Aug 3 page is stale on this *and* on templates.
+- **The prototype lets a rep un-archive a store back to Draft**, which the spec forbids twice
+  (support-only, and never back to Draft). Logged; we reproduce the prototype.
+- **The Workspace is desktop-only, floored at 1280px** — the design sets that floor itself.
+- **The prototype's numbers are random.** Dashboard totals differ between two loads of the
+  prototype. Fidelity comparison is on layout, not figures.
+- **~680 lines of dead code** — six components defined and never used. Not ported.
+- **Three accessibility defects fixed**, all invisible: links that should be buttons, unnamed nav
+  items, suppressed focus outlines.
+- **The design system is React** while the target is Vue — a design-time artifact, recorded not
+  acted on.
 
 ---
 
-*Full detail behind every item: `docs/open-questions.md` and `docs/divergences.md`.*
+*Full detail: `docs/open-questions.md`, `docs/divergences.md`, `docs/specs-index.md`.*
