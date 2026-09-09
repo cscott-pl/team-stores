@@ -1,0 +1,111 @@
+// Scaffolding only — this component and its styles are deleted once every
+// route has a real page. Tokens are used throughout so it is not a special case.
+
+.route-placeholder {
+  max-width: 900px;
+  padding: var(--space-16) var(--space-12);
+  margin: 0 auto;
+  font-family: var(--font-body);
+
+  &__eyebrow {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide-6);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  &__title {
+    margin: 0 0 var(--space-10);
+    font-family: var(--font-display);
+    font-size: var(--text-11xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--tracking-tighter);
+    color: var(--text-primary);
+  }
+
+  &__meta {
+    margin: 0 0 var(--space-10);
+    padding: var(--space-8);
+    background: var(--surface-card);
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xs);
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--space-6);
+    padding: var(--space-3) 0;
+
+    + .route-placeholder__row {
+      border-top: var(--border-width) solid var(--border-default);
+    }
+
+    dt {
+      font-size: var(--text-base-h);
+      font-weight: var(--weight-semibold);
+      color: var(--text-muted);
+    }
+
+    dd {
+      margin: 0;
+      font-size: var(--text-md);
+      color: var(--text-primary);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: var(--text-base-h);
+    }
+  }
+
+  &__note {
+    margin: 0 0 var(--space-10);
+    padding: var(--space-6) var(--space-8);
+    font-size: var(--text-md);
+    line-height: var(--leading-prose);
+    color: var(--text-warning);
+    background: var(--surface-warning);
+    border: var(--border-width) solid var(--border-warning);
+    border-radius: var(--radius-lg);
+  }
+
+  &__nav-title {
+    margin: 0 0 var(--space-4);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-2) var(--space-8);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    a {
+      display: block;
+      padding: var(--space-2) var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-base-h);
+      color: var(--text-link);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+
+      &:hover {
+        background: var(--surface-hover);
+      }
+
+      &.router-link-exact-active {
+        font-weight: var(--weight-bold);
+        color: var(--text-primary);
+        background: var(--surface-muted);
+      }
+    }
+  }
+}
