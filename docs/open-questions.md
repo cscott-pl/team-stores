@@ -183,28 +183,40 @@ first time that machine is replaced.
 
 ## Raised by the Phase 2 inventory (2026-09-09)
 
-### OQ-P13 · Loading and error states the design never showed — **needs design**
-The prototype has **no error state anywhere** (`retry` appears 0 times; the 30 `error` and 22
-`invalid` hits are all form-field validation) and **one** loading state — a single
-`LoadingOverlay` during store creation. Nothing is asynchronous, so nothing can fail.
+### OQ-P13 · Loading and error states — **re-scoped 2026-09-09; blocks nothing**
+**Owner:** Connor · **Status:** open, non-blocking
 
-`CLAUDE.md` requires every `src/services/` function to be async and promise-returning. So every
-seam introduces a loading path and a failure path **that do not exist in the design**. That is new
-UI, not conversion.
-**Affects:** every screen that reads data. **Owner:** Connor — needs design, not a developer
-guess. Until answered, services resolve immediately and no failure UI is invented.
+The design has no error state anywhere and one loading state. Nothing is asynchronous, so nothing
+can fail.
 
-### OQ-P14 · Is the store-template feature in the MVP?
-It is **fully built and entirely unreachable**: `TemplateWorkspace` (286 lines),
+**Resolved for this prototype — there was no tension.** Service functions are async because that
+is the contract the backend will fulfil; a promise that resolves immediately renders no loading
+state, so nothing new appears on screen. We build **no** spinners, skeletons, retry buttons or
+error banners the design never showed, and keep the single existing `LoadingOverlay` where the
+design has it.
+
+**Still open, for later:** once the seams are real, each needs loading and failure treatment, and
+the design specifies none. That is design work and it has not happened. Recorded as a note to the
+dev team in `docs/service-layers/README.md` rather than as UI for us to invent.
+
+### OQ-P14 · Is the store-template feature a cut or an oversight? — **escalated**
+**Owner:** Connor · **Raised:** 2026-09-09 · **Status:** open — **product question**
+
+~500 lines, fully built, **entirely unreachable**: `TemplateWorkspace` (286),
 `TemplateRepository` (78), `CreateTemplateModal`, `TemplateSummaryCard`,
-`StoreTemplateInterstitial`, the `Tpl*` set, and the wizard's template mode (`templateMode`, which
-drops the products step). `screen === "template"` and `"template-repo"` are read but never set,
-and `setTemplateMode(true)` is never called.
+`StoreTemplateInterstitial`, the `Tpl*` set, and the wizard's template mode.
+`screen === "template"` / `"template-repo"` are read but never set; `setTemplateMode(true)` is
+never called.
 
-Live entry points **point at it** — `onCreateTemplate` is wired from `StoreList`,
-`AccountProfile` and `Dashboard` — so the buttons exist and the destination cannot be reached.
-**Affects:** whether ~500 lines get converted, and whether three live buttons stay dead.
-**Owner:** Connor. Preserved as-is meanwhile: not finished, not removed.
+**Decided for the build (2026-09-09):** the ~500 lines are **not ported** — reproducing them
+faithfully would mean reproducing something no user can see. The three live buttons that point at
+it (`onCreateTemplate` from `StoreList`, `AccountProfile`, `Dashboard`) **stay exactly as they
+behave now: present, styled, going nowhere.** That is what the prototype does. Not wired up, not
+removed.
+
+**Escalated as a product question:** a fully-built feature nobody can reach is either a cut or an
+oversight. **If it is in the MVP, the scope changes** — those ~500 lines come back and three dead
+buttons become live.
 
 ### OQ-P15 · Are the Team Manager portal and the access/gate screens in this repo's scope?
 Two surfaces that may not belong to the Workspace:
@@ -218,28 +230,24 @@ They are in the in-scope file, so by the file-scope rule they are in scope; by t
 "auth is injected" and "Workspace is internal rep tooling" rules they may not be.
 **Affects:** feature folder structure and roughly 1,000 lines. **Owner:** Connor.
 
-### OQ-P16 · Which Tweaks-panel variant is canonical?
-The Tweaks panel is preview shell and is not reproduced — but it is **not a simple deletion**,
-because `App()` reads `tweaks.*` directly and some flags gate real behaviour, while others expose
-variants that exist **only** as tweaks:
+### OQ-P16 · ~~Which Tweaks-panel variant is canonical?~~ — **RESOLVED 2026-09-09**
+**Resolved without escalation.** Take whatever the panel produces untouched from cleared
+first-run state — the faithful default, needing nobody's input. All 18 flags in `TWEAK_DEFAULTS`
+(`workspace-app.jsx:26390`) have a default, so nothing needed escalating.
 
-- `TeamStoresPortal`: 2 hero treatments × 3 headlines × 2 CTA labels × 2 CTA colours
-- Create wizard: 2 accent colours (PROLOOK Red / Navy), 2 template layouts (sidebar / stacked)
-- Onboarding checklist: 3 accents (red / navy / green), 2 positions
-- Behaviour gates: `hasStoreAccess`, `bypassGate`, `seedData`, `overviewEmpty`, `zeroState`,
-  `ssoWelcome`, `ssoMultiBrand`, `ssoOriginBrand`
+Every chosen value and its alternative is recorded in
+[`../architecture/tweaks-defaults.md`](../architecture/tweaks-defaults.md), so a later "actually we
+wanted the other portal treatment" is a one-line change rather than an investigation.
 
-Removing the panel means **choosing a fixed value for each**, and those are product decisions.
-**Affects:** Phase 1 shell removal, and the default appearance of the portal, wizard and
-checklist. **Owner:** Connor. Full list in `docs/architecture/interaction-inventory.md` §5.
+One consequence worth flagging: `hasStoreAccess: true` means the **gate, application form, Stripe
+verification and pending screens are never reached** in the default state. They stay built — see
+OQ-P15.
 
-### OQ-P17 · Fidelity checklist item 1 cannot cover the Overview KPIs
-Seed revenue is `Math.random()`-generated (`workspace-app.jsx:27918`) and feeds the Overview
-totals — two loads gave $69,589 then $69,420, and 1,513 then 1,509 orders. Dates are
-`Date.now()`-relative and drift.
+### OQ-P17 · ~~Fidelity item 1 vs. the randomised KPIs~~ — **RESOLVED 2026-09-09**
+**Resolved.** `AGENTS.md` fidelity checklist item 1 amended: comparison is on layout, spacing,
+sizing, typography, colour and state — **not on displayed numbers**. Values differ between two
+loads of the prototype itself and always will.
 
-So "side-by-side … colour all match" can never pass on those values. The checklist should say
-values are excluded and layout/typography/formatting compared instead, and `src/mock-data/` should
-use **fixed** fixtures so our own regression comparisons are stable.
-**Affects:** `AGENTS.md` fidelity checklist wording. Not blocking. **Owner:** Connor — a wording
-change to a governing doc, so not made unilaterally.
+`src/mock-data/` uses **fixed fixtures**: capture one observed load, record the values, freeze
+them. Each fixture file notes that its source was randomised and that the values are one frozen
+sample.

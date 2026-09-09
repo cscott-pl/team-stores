@@ -35,6 +35,28 @@ One file per service module, mirroring `src/services/`.
 - **Brand/tenant identity comes from `src/config/` at runtime**, never from build-time constants,
   and never assuming one build serves exactly one brand.
 
+## ⚠️ Every seam here will need loading and failure treatment — the design specifies none
+
+**A note to the dev team, and a question for design later. Not UI for this prototype to invent.**
+
+The design has **no error state anywhere** (`retry` appears 0 times; the 30 `error` and 22
+`invalid` hits are all form-field validation) and exactly **one** loading state — a single
+`LoadingOverlay` during store creation. Nothing in the prototype is asynchronous, so nothing can
+fail.
+
+Service functions here are async because that is the contract the backend will fulfil. **A promise
+that resolves immediately renders no loading state, so nothing new appears on screen** — there is
+no tension between the async contract and fidelity.
+
+**Therefore, in this prototype:**
+
+- Do **not** build spinners, skeletons, retry buttons or error banners the design never showed.
+- Keep the single existing `LoadingOverlay` exactly where the design has it.
+- Each seam document below records that its loading and failure treatment is **unspecified**.
+
+Once these seams are real, each needs both. That is design work, and it has not happened. Tracked
+as **OQ-P13** — which blocks nothing in this prototype.
+
 ## Note on the prototype's current data access
 
 The design has no service layer at all. `reference/workspace-app.jsx` seeds from in-file factories

@@ -42,8 +42,15 @@ Every report states:
 
 Against the deployed Workspace, for every view, panel, tab, modal and overlay:
 
-1. Side-by-side at the design's supported widths — layout, spacing, sizing, typography and colour
-   all match
+1. Side-by-side at the design's supported widths — layout, spacing, sizing, typography, colour
+   and state all match. **Not displayed numbers.** The prototype's seed revenue is
+   `Math.random()`-generated (`workspace-app.jsx:27918`) and feeds the Overview KPIs, and dates are
+   `Date.now()`-relative, so values differ between two loads of the prototype itself. Compare
+   layout and formatting, never the figures. `src/mock-data/` uses fixed fixtures so our own
+   comparisons stay stable. See OQ-P17.
+   The design's supported widths are **1280px and upward, continuously** — 1280 is a hard floor
+   the design sets itself, and there are no named breakpoints to test at. See
+   `docs/architecture/responsive-strategy.md`.
 2. Every interactive element behaves identically: hover, focus, active, disabled, selected
 3. Every flow that starts and ends inside the Workspace completes end to end
 4. No console errors or warnings introduced

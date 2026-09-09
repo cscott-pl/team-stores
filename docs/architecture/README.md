@@ -16,6 +16,8 @@ Routes, state, data flow, conventions, and the pinned toolchain versions.
   feature components by fan-in, dead code, and the design-system name correspondence.
 - [`interaction-inventory.md`](interaction-inventory.md) — every interactive element as
   functional / semantically-wrong-but-functional / simulated / dead / preview-shell.
+- [`tweaks-defaults.md`](tweaks-defaults.md) — **decided.** The 18 preview-shell flag values
+  taken as defaults, each with the alternative not chosen. Resolves OQ-P16.
 - [`data-inventory.md`](data-inventory.md) — entity shapes, 160 data constants, 10 persistence
   keys, the 22 `window.__*` globals, and the non-deterministic seed data.
 

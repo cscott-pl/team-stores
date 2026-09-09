@@ -174,8 +174,19 @@ describes:
 ## Context strategy
 
 For tasks requiring broad codebase understanding (planning, architecture review, multi-file
-analysis), delegate reading to gemini-mcp-tool: call `ask-gemini` with @-file references and
+analysis), delegating the reading to gemini-mcp-tool is **optional and conditional** on its
+backend already being installed and signed in. Call `ask-gemini` with @-file references and
 request a structured summary including file paths, so follow-up work does not require re-reading.
-Work from that summary. Read files directly only when you need exact code for an edit. Use
-`changeMode` for structured edit suggestions. Keep precise multi-step edits and project-context
-reasoning in Claude.
+Use `changeMode` for structured edit suggestions.
+
+**If the backend is not installed, do the analysis directly — that is an acceptable alternative,
+and often the better one.** Do not run the installer (`curl | bash`) or an interactive sign-in to
+satisfy this section; both need explicit authorisation, and stalling the task on them is worse
+than reading the files yourself.
+
+When you do analyse directly, prefer **programmatic extraction with a committed script** over a
+one-off read. Phase 2 did this: the counts in `docs/architecture/component-catalog.md` come from a
+script recorded in that file, so anyone can re-derive them against a future export. Reproducible
+beats a summary nobody can check — and it caught two errors a single read had missed.
+
+Keep precise multi-step edits and project-context reasoning in Claude either way.
