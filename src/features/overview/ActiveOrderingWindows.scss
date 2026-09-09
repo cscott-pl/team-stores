@@ -1,0 +1,86 @@
+@use "@/styles/mixins" as *;
+
+.ordering-windows {
+  // The prototype uses a distinct brighter green for this progress fill than
+  // the semantic success green — reproduced as-is (DIV-006: three greens serve
+  // one role in the design).
+  // stylelint-disable-next-line color-no-hex
+  --window-progress: #5cb924;
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  &__row {
+    padding: var(--space-9) 0;
+    border-bottom: var(--border-width) solid var(--border-default);
+  }
+
+  &__head {
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+    margin-bottom: var(--space-8);
+  }
+
+  &__names {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: var(--text-md-h);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+
+    @include truncate;
+  }
+
+  &__span {
+    margin: 1px 0 0;
+    font-size: var(--text-base);
+    color: var(--text-muted);
+  }
+
+  &__raised {
+    flex-shrink: 0;
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-md);
+    font-weight: var(--weight-bold);
+    color: var(--green-600);
+
+    // Prototype's own lighter success wash for this pill, distinct from
+    // --surface-success. Reproduced rather than harmonised.
+    // stylelint-disable-next-line color-no-hex
+    background: #dcf6e3;
+    border-radius: var(--radius-pill);
+  }
+
+  &__dates {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-6);
+    font-size: var(--text-base-h);
+    font-weight: var(--weight-semibold);
+    color: var(--muted-2);
+  }
+
+  &__empty {
+    padding: var(--space-10) 0;
+    margin: 0;
+    font-size: var(--text-md);
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  &__foot {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    padding-top: var(--space-8);
+    margin: 0;
+    font-size: var(--text-base-h);
+    color: var(--text-muted);
+  }
+}

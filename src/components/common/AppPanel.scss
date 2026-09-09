@@ -1,0 +1,33 @@
+.app-panel {
+  padding: var(--space-9) var(--space-10);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-2xl);
+
+  &__head {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+  }
+
+  &__subtitle {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-copy);
+    color: var(--text-muted);
+  }
+
+  &__actions {
+    flex-shrink: 0;
+  }
+}

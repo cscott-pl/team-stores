@@ -1,0 +1,88 @@
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-9) var(--space-10);
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-2xl);
+
+  // Neutralise <button> defaults so the interactive variant is pixel-identical
+  // to the static one — CLAUDE.md: neutralise in SCSS rather than avoid the
+  // correct element.
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  appearance: none;
+
+  &--interactive {
+    cursor: pointer;
+    transition:
+      box-shadow var(--duration-mid-2) var(--ease-default),
+      border-color var(--duration-mid-2) var(--ease-default),
+      transform var(--duration-mid-2) var(--ease-default);
+
+    &:hover {
+      border-color: var(--zinc-300);
+
+      // One-off elevation from the prototype (:4174) — not one of the six
+      // recurring shadow steps, so it is not a token. See DIV-006.
+      // stylelint-disable-next-line function-disallowed-list
+      box-shadow: 0 6px 18px rgb(20 20 30 / 7%);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__label {
+    display: inline-flex;
+    gap: var(--space-4);
+    align-items: center;
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide-7);
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  &__cue {
+    color: var(--zinc-300);
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--text-primary);
+    background: var(--bg-soft);
+    border-radius: var(--radius-lg);
+  }
+
+  &__value {
+    font-family: var(--font-display);
+    font-size: var(--text-12xl);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-none);
+    letter-spacing: var(--tracking-tighter);
+    color: var(--text-primary);
+  }
+
+  &__foot {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    font-size: var(--text-base-h);
+  }
+
+  &__sub {
+    color: var(--text-muted);
+  }
+}

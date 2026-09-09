@@ -1,0 +1,88 @@
+@use "@/styles/mixins" as *;
+
+.roster-bank {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  &__row {
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+    padding: var(--space-8) 0;
+    border-bottom: var(--border-width) solid var(--zinc-100);
+  }
+
+  &__names {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    display: block;
+    font-size: var(--text-md-h);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+
+    @include truncate;
+  }
+
+  &__team {
+    display: block;
+    margin-top: 1px;
+    font-size: var(--text-base);
+    color: var(--text-muted);
+
+    @include truncate;
+  }
+
+  &__badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: var(--space-3);
+    align-items: center;
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-extrabold);
+    color: var(--amber-700);
+    background: var(--amber-soft);
+    border: var(--border-width) solid var(--border-warning);
+    border-radius: var(--radius-pill);
+  }
+
+  &__review {
+    flex-shrink: 0;
+    padding: 7px var(--space-7);
+    font-family: inherit;
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+    cursor: pointer;
+    background: transparent;
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-md);
+  }
+
+  &__row:hover &__review {
+    background: var(--surface-card);
+    border-color: var(--border-strong);
+  }
+
+  &__empty {
+    padding: var(--space-10) 0;
+    margin: 0;
+    font-size: var(--text-md);
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  &__foot {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    padding-top: var(--space-8);
+    margin: 0;
+    font-size: var(--text-base-h);
+    color: var(--text-muted);
+  }
+}

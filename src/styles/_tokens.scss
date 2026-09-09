@@ -73,6 +73,13 @@
   --orange-600:  #e8590c;
   --red-soft:    #fdecea;   // 16  — error background
   --red-line:    #f3c9c5;
+
+  // ---- Chart series ----
+  // The Revenue/Dealer-Profit chart uses two hues that appear nowhere else in
+  // the product and have no design-system equivalent. From the prototype's
+  // RPC_REV / RPC_PROF (workspace-app.jsx:4275).
+  --chart-revenue: #7c3aed;   // violet — left axis  [no DS equivalent]
+  --chart-profit:  #d97706;   // amber  — right axis [no DS equivalent]
 }
 
 // -----------------------------------------------------------------------------

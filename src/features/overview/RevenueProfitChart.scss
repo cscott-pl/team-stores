@@ -1,0 +1,140 @@
+.revenue-chart {
+  &__tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  &__tile {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5px;
+    align-items: flex-start;
+    min-width: 200px;
+    padding: var(--space-8);
+    background: var(--surface-card);
+    border: var(--border-width) solid var(--border-strong);
+    border-radius: var(--radius-lg);
+  }
+
+  &__tile-label {
+    margin: 0;
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    line-height: 16px;
+    letter-spacing: var(--tracking-wider);
+    color: var(--zinc-500);
+  }
+
+  &__tile-value {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-10xl);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-none);
+    color: var(--text-primary);
+  }
+
+  &__svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  &__grid line {
+    stroke: var(--bg-soft-2);
+    stroke-width: 1;
+    stroke-dasharray: 3 4;
+  }
+
+  &__axis text {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    fill: var(--muted-2);
+  }
+
+  &__x-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    fill: var(--text-muted);
+  }
+
+  &__line {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    &--revenue {
+      stroke: var(--chart-revenue);
+    }
+
+    &--profit {
+      stroke: var(--chart-profit);
+    }
+  }
+
+  &__dot {
+    stroke: var(--surface-card);
+    stroke-width: 2;
+
+    &--revenue {
+      fill: var(--chart-revenue);
+    }
+
+    &--profit {
+      fill: var(--chart-profit);
+    }
+  }
+
+  &__hit {
+    fill: transparent;
+  }
+
+  // Legend sits above the plot, right-aligned — prototype :4338.
+  &__legend {
+    display: flex;
+    gap: var(--space-9);
+    align-items: center;
+    justify-content: flex-end;
+    padding: var(--space-7) 0 var(--space-5);
+    margin: 0;
+    font-size: var(--text-base-h);
+    font-weight: var(--weight-semibold);
+    color: var(--text-primary);
+  }
+
+  &__key {
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+  }
+
+  &__axis-note {
+    font-weight: var(--weight-regular);
+    color: var(--text-muted);
+  }
+
+  &__dot-key {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: var(--radius-pill);
+
+    &--revenue {
+      background: var(--chart-revenue);
+    }
+
+    &--profit {
+      background: var(--chart-profit);
+    }
+  }
+
+  &__readout {
+    margin: var(--space-4) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    text-align: right;
+  }
+}

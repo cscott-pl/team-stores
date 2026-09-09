@@ -20,7 +20,18 @@
     "color-function-alias-notation": null,
     "color-function-notation": null,
     "alpha-value-notation": null,
-    "custom-property-empty-line-before": null
+    "custom-property-empty-line-before": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "deep",
+          "slotted",
+          "global"
+        ],
+        "message": "Unknown pseudo-class. Vue SFC scoped-style pseudos (:deep, :slotted, :global) are allowed."
+      }
+    ]
   },
   "overrides": [
     {

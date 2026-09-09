@@ -1,0 +1,16 @@
+// The team colour is bound at the call site as --team-avatar-color: it is store
+// data, not a design token, so it cannot live here.
+
+.team-avatar {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--team-avatar-size);
+  height: var(--team-avatar-size);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-inverse);
+  background: var(--team-avatar-color);
+  border-radius: var(--radius-full);
+}

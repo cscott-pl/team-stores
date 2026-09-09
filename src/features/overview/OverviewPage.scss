@@ -1,0 +1,105 @@
+@use "@/styles/mixins" as *;
+
+.overview {
+  // The prototype centres the content and caps it at 1376px, keeping a 32px
+  // minimum gutter (`workspace-app.jsx:4911`).
+  padding: var(--space-11) max(var(--space-12), calc((100% - 1376px) / 2)) 80px;
+  background: var(--surface-page);
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: var(--space-10);
+  }
+
+  &__title {
+    margin: 0 0 var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--text-9xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+  }
+
+  &__lede {
+    margin: 0;
+    font-size: var(--text-lg);
+    color: var(--text-muted);
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  &__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 240px;
+    background: var(--surface-card);
+    border: var(--border-width) solid var(--zinc-300);
+    border-radius: var(--radius-lg);
+  }
+
+  &__search-label {
+    @include visually-hidden;
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: var(--space-6) var(--space-14) var(--space-6) var(--space-8);
+    font-size: var(--text-md-h);
+    background: transparent;
+    border: 0;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  &__search-icon {
+    position: absolute;
+    right: var(--space-6);
+    color: var(--muted-2);
+  }
+
+  &__summary-head {
+    display: flex;
+    gap: var(--space-5);
+    align-items: baseline;
+    padding-top: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  &__section-label {
+    margin: 0;
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide-7);
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  &__summary-caption {
+    margin: 0;
+    font-size: var(--text-sm-h);
+    color: var(--muted-2);
+  }
+
+  &__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  &__panels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+}

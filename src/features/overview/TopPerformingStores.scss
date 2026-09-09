@@ -1,0 +1,145 @@
+@use "@/styles/mixins" as *;
+
+.top-stores {
+  width: 100%;
+  border-collapse: collapse;
+
+  &__caption {
+    @include visually-hidden;
+  }
+
+  th,
+  td {
+    padding: var(--space-8) 0;
+    font-weight: var(--weight-regular);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  thead th {
+    padding: 0 0 var(--space-6);
+    border-bottom: var(--border-width) solid var(--border-default);
+  }
+
+  &__th--end {
+    text-align: right;
+  }
+
+  &__sort {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    max-width: 100%;
+    padding: 0;
+    font: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide-5);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+
+    span {
+      @include truncate;
+    }
+
+    :deep(.app-icon) {
+      opacity: 0.45;
+    }
+
+    &--active {
+      color: var(--text-primary);
+
+      :deep(.app-icon) {
+        opacity: 1;
+      }
+    }
+  }
+
+  .top-stores__th--end &__sort,
+  &__th--end &__sort {
+    justify-content: flex-end;
+  }
+
+  &__row {
+    border-bottom: var(--border-width) solid var(--zinc-100);
+
+    &:hover {
+      background: var(--zinc-50);
+    }
+  }
+
+  &__store {
+    min-width: 190px;
+  }
+
+  &__open {
+    display: inline-flex;
+    gap: var(--space-6);
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+  }
+
+  &__names {
+    min-width: 0;
+  }
+
+  &__name {
+    display: block;
+    font-size: var(--text-md-h);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+
+    @include truncate;
+  }
+
+  &__sport {
+    display: block;
+    font-size: var(--text-base);
+    color: var(--text-muted);
+  }
+
+  &__mono {
+    font-family: var(--font-mono);
+    font-size: var(--text-md);
+    color: var(--text-primary);
+  }
+
+  &__td--end {
+    text-align: right;
+  }
+
+  &__td--strong {
+    font-weight: var(--weight-bold);
+  }
+
+  &__metric {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-end;
+    width: 70%;
+  }
+
+  &__ratio {
+    font-family: var(--font-body);
+    font-size: var(--text-sm-h);
+    color: var(--text-muted);
+  }
+
+  &__empty {
+    padding: var(--space-12) 0;
+    color: var(--text-muted);
+    text-align: center;
+  }
+}

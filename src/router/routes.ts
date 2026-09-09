@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import RoutePlaceholder from "@/components/common/RoutePlaceholder.vue";
+import OverviewPage from "@/features/overview/OverviewPage.vue";
 
 /**
  * The Workspace route table.
@@ -74,7 +75,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/overview",
     name: "overview",
-    component: RoutePlaceholder,
+    component: OverviewPage,
     meta: { title: "Overview", screen: "overview", spec: "Analytics Dashboard (Overview Tab)" },
   },
   {

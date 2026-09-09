@@ -1,0 +1,32 @@
+.segmented-toggle {
+  display: inline-flex;
+  gap: 2px;
+  padding: var(--space-2);
+  background: var(--bg-soft);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-lg);
+
+  &__option {
+    padding: var(--space-4) var(--space-8);
+    font-family: inherit;
+    font-size: var(--text-base-h);
+    font-weight: var(--weight-bold);
+    color: var(--text-muted);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-md);
+    transition:
+      background var(--duration-fast) var(--ease-default),
+      color var(--duration-fast) var(--ease-default);
+
+    &--active {
+      color: var(--text-primary);
+      background: var(--surface-card);
+
+      // One-off from the prototype (:4212). Not a recurring elevation step.
+      // stylelint-disable-next-line function-disallowed-list
+      box-shadow: 0 1px 2px rgb(20 20 30 / 10%);
+    }
+  }
+}

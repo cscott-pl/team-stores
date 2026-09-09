@@ -576,3 +576,38 @@ sides.
 kebab menu in the Stores list (`:3774`), wired to `onArchive` → `ArchiveStoreModal`. The spec
 places archiving only in the Settings Danger Zone. Minor, but it is a second destructive entry
 point the spec does not sanction.
+
+---
+
+## DIV-016 · Ordering-window urgency flag is specified but absent
+
+**Found while building Overview, 2026-09-09.**
+
+**Spec** — Active Ordering Windows Monitor (Jun 22, 2026): *"Per-store progress rows showing
+**days-left (flagged urgent under 7 days)**, amount raised, and a progress bar."*
+
+**Prototype** — `OrderingWindowRow` (`workspace-app.jsx:4396`) renders the avatar, store name, a
+"{n} day window" caption, the amount raised, a progress bar and the two window dates. There is
+**no days-left figure on the row and no urgency treatment at any threshold.** `daysLeft` is
+computed (`:4671`) and used only to sort the rows soonest-first — it is never displayed.
+
+**Built as the prototype has it.** Adding an urgency flag would be inventing UI the design never
+showed. Recorded so the gap is visible if the spec is the intent.
+
+---
+
+## DIV-017 · Chart series colours have no design-system equivalent
+
+**Found while building Overview, 2026-09-09.**
+
+The Revenue / Dealer Profit chart uses two hues that appear nowhere else in the product:
+`#7c3aed` violet (revenue, left axis) and `#d97706` amber (dealer profit, right axis) —
+`RPC_REV` / `RPC_PROF` at `workspace-app.jsx:4275`.
+
+Neither is in the prototype's `:root` block, in `PROLOOK_COLORS`, or in the design system. They
+are tokenised as `--chart-revenue` / `--chart-profit` and marked `[no DS equivalent]`, so they
+surface in the OQ-B02 answer rather than being quietly absorbed.
+
+Also noted: the ordering-window progress fill is `#5cb924` and its "raised" pill is `#dcf6e3` —
+a **third and fourth green**, distinct from both `--green-600` and `--green-soft`. Reproduced
+inline with a stylelint disable naming the reason, consistent with DIV-006.
