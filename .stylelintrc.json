@@ -1,0 +1,58 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss"
+  ],
+  "rules": {
+    "declaration-no-important": true,
+    "custom-property-pattern": null,
+    "no-descending-specificity": null,
+    "comment-empty-line-before": null,
+    "scss/comment-no-empty": null,
+    "import-notation": null,
+    "value-keyword-case": null,
+    "selector-class-pattern": [
+      "^[a-z]([a-z0-9-]+)?(__([a-z0-9]+-?)+)?(--([a-z0-9]+-?)+){0,2}$",
+      {
+        "message": "Expected class selector to be BEM: block__element--modifier"
+      }
+    ],
+    "color-hex-length": null,
+    "color-function-alias-notation": null,
+    "color-function-notation": null,
+    "alpha-value-notation": null,
+    "custom-property-empty-line-before": null
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/styles/**/*.scss"
+      ],
+      "rules": {
+        "color-no-hex": null,
+        "color-named": null,
+        "function-disallowed-list": null
+      }
+    },
+    {
+      "files": [
+        "src/features/**/*.scss",
+        "src/components/**/*.scss"
+      ],
+      "rules": {
+        "color-no-hex": true,
+        "color-named": "never",
+        "function-disallowed-list": [
+          [
+            "rgb",
+            "rgba",
+            "hsl",
+            "hsla"
+          ],
+          {
+            "message": "Use a design token via var(--\u2026) rather than a raw colour. For a one-off shadow from the design, disable this line with a comment naming the shadow \u2014 see docs/divergences.md DIV-006."
+          }
+        ]
+      }
+    }
+  ]
+}
