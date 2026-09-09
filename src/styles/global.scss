@@ -1,0 +1,92 @@
+// =============================================================================
+// Global stylesheet — the single entry point
+// =============================================================================
+// Imported once, by src/main.ts. Everything below is either a token definition
+// or a base element style. No component styling lives here: each component has
+// a sibling .scss attached via <style lang="scss" scoped src="./Name.scss">.
+//
+// @use only — never @import. See docs/architecture/toolchain-decisions.md.
+// =============================================================================
+
+// 1. Fonts — the isolated third-party load. Must come first so faces are
+//    requested before first paint. Typeface choice is OQ-B02.
+@use "fonts";
+
+// 2. Tokens — colour, spacing, radii, shadows, motion, layout, z-index.
+@use "tokens";
+
+// 3. Typography — families, sizes, weights, line heights, tracking.
+@use "typography";
+
+// 4. Focus — the :focus-visible treatment. An authorised deviation from the
+//    prototype, which suppresses outlines in 32+ places. See DIV-007.
+@use "focus";
+
+// -----------------------------------------------------------------------------
+// Reset + base — reproduced from the design export's dc.html <style> block
+// -----------------------------------------------------------------------------
+// Verbatim in effect, retokenised. `reference/Team Stores Workspace.dc.html`.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: var(--leading-loose);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+// The design's custom scrollbar, from the same dc.html block.
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--zinc-300);
+  border-radius: 10px;
+  border: 2px solid var(--surface-card);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+// -----------------------------------------------------------------------------
+// The 1280px floor
+// -----------------------------------------------------------------------------
+// The design sets this itself — both application roots carry minWidth: 1280,
+// and the author's comment reads "the App is min-width: 1280". Below it the
+// design scrolls horizontally; it does not reflow. There are no breakpoints.
+// See docs/architecture/responsive-strategy.md.
+
+#app {
+  min-width: var(--layout-min-width);
+  min-height: 100vh;
+  background: var(--surface-page);
+}
