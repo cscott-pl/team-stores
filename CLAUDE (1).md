@@ -179,3 +179,69 @@ request a structured summary including file paths, so follow-up work does not re
 Work from that summary. Read files directly only when you need exact code for an edit. Use
 `changeMode` for structured edit suggestions. Keep precise multi-step edits and project-context
 reasoning in Claude.
+
+## Requirements source — Confluence
+
+All functional requirements, specifications and PRDs for this project live in the **Team Stores**
+Confluence space. Use them for functional context: what a screen is for, what a rule is, what a
+field means, what a workflow does.
+
+**The only permitted folder is "Team Stores MVP Specs".** Plus the BRD, once the BA team issues
+it, which joins the MVP Specs as authoritative — until then it does not exist and is not to be
+anticipated.
+
+**Excluded, without exception:**
+
+- **"Planning"** — out-of-scope material
+- **"Research"** — unvalidated and unorganised ideas
+- **"Archive"** — outdated material
+- **Any other folder in the space** not named above
+
+### Verify location before using a page
+
+Confluence search returns pages by relevance, not by folder, so a result set will contain pages
+from excluded folders. **Confirm each page's parent folder is "Team Stores MVP Specs" before
+using it for anything.** If you cannot establish where a page lives, do not use it.
+
+When a search surfaces a page from an excluded folder: ignore it. Do not quote it, do not
+paraphrase it, do not use it to fill a gap, and do not use it to corroborate something found in
+the MVP Specs. A page's plausibility is not a reason to promote it across the boundary.
+
+Meeting minutes, email threads and discussion pages are not specifications, even inside the MVP
+Specs folder. Treat them as context and say so when you rely on them.
+
+### When the specs are silent
+
+Say *"this is missing from the MVP specs"*, log it in `docs/open-questions.md`, and stop. Do not
+infer it, do not take it from an excluded folder, and do not resolve it from the prototype's
+behaviour and present that as a requirement.
+
+### Precedence
+
+- **Specs** are the truth for requirements, intent, business rules and terminology.
+- **The prototype** is the truth for appearance and behaviour.
+- Where they conflict, implement the prototype and log the conflict in `docs/divergences.md`. Do
+  not pick a winner. The specs are known to potentially lag the deployed prototype — that gap is
+  a finding we owe the team, not something to quietly reconcile.
+
+### Specs do not expand scope
+
+Scope is the Workspace, and only the Workspace. A spec describing the storefront, the landing
+page, the documentation page or the third-party variant is background, not authorisation to build
+it. Scope changes come from me, never from a document.
+
+### Citations and provenance
+
+Cite the spec in business-rule comments by page title and section, matching the existing
+convention in the codebase. **Never invent a citation.** If you cannot locate a page that a rule
+seems to require, say so rather than attributing the rule to a plausible-sounding page.
+
+Maintain `docs/specs-index.md`: for every spec page read, record its title, URL, version or
+last-modified date, the date you read it, and which rules or REQ IDs derive from it. The version
+capture matters — it is what makes a later documentation-versus-implementation diff meaningful
+instead of a re-read from scratch.
+
+### Read-only
+
+Never create, edit, comment on, or move a Confluence page. This project reads from Confluence and
+writes to the repository.
