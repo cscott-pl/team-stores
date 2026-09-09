@@ -178,3 +178,68 @@ exists in one place only. See the archival requirement in `reference/README.md` 
 `REPO-SETUP.md` §1.
 **Owner:** Connor. Not blocking, but it invalidates "verifiable against what was approved" the
 first time that machine is replaced.
+
+---
+
+## Raised by the Phase 2 inventory (2026-09-09)
+
+### OQ-P13 · Loading and error states the design never showed — **needs design**
+The prototype has **no error state anywhere** (`retry` appears 0 times; the 30 `error` and 22
+`invalid` hits are all form-field validation) and **one** loading state — a single
+`LoadingOverlay` during store creation. Nothing is asynchronous, so nothing can fail.
+
+`CLAUDE.md` requires every `src/services/` function to be async and promise-returning. So every
+seam introduces a loading path and a failure path **that do not exist in the design**. That is new
+UI, not conversion.
+**Affects:** every screen that reads data. **Owner:** Connor — needs design, not a developer
+guess. Until answered, services resolve immediately and no failure UI is invented.
+
+### OQ-P14 · Is the store-template feature in the MVP?
+It is **fully built and entirely unreachable**: `TemplateWorkspace` (286 lines),
+`TemplateRepository` (78), `CreateTemplateModal`, `TemplateSummaryCard`,
+`StoreTemplateInterstitial`, the `Tpl*` set, and the wizard's template mode (`templateMode`, which
+drops the products step). `screen === "template"` and `"template-repo"` are read but never set,
+and `setTemplateMode(true)` is never called.
+
+Live entry points **point at it** — `onCreateTemplate` is wired from `StoreList`,
+`AccountProfile` and `Dashboard` — so the buttons exist and the destination cannot be reached.
+**Affects:** whether ~500 lines get converted, and whether three live buttons stay dead.
+**Owner:** Connor. Preserved as-is meanwhile: not finished, not removed.
+
+### OQ-P15 · Are the Team Manager portal and the access/gate screens in this repo's scope?
+Two surfaces that may not belong to the Workspace:
+- **`TeamManagerPortal`** (388 lines) — a *different persona's* view (team manager, not rep),
+  rendered over the Workspace via `window.__openTmPortal`.
+- **`FeatureGate` / `AccessApplyForm` / `StripeVerifying` / `AccessPending`** (~600 lines) —
+  pre-authentication surfaces. `CLAUDE.md` treats auth as an injected boundary, which suggests
+  these sit outside it.
+
+They are in the in-scope file, so by the file-scope rule they are in scope; by the
+"auth is injected" and "Workspace is internal rep tooling" rules they may not be.
+**Affects:** feature folder structure and roughly 1,000 lines. **Owner:** Connor.
+
+### OQ-P16 · Which Tweaks-panel variant is canonical?
+The Tweaks panel is preview shell and is not reproduced — but it is **not a simple deletion**,
+because `App()` reads `tweaks.*` directly and some flags gate real behaviour, while others expose
+variants that exist **only** as tweaks:
+
+- `TeamStoresPortal`: 2 hero treatments × 3 headlines × 2 CTA labels × 2 CTA colours
+- Create wizard: 2 accent colours (PROLOOK Red / Navy), 2 template layouts (sidebar / stacked)
+- Onboarding checklist: 3 accents (red / navy / green), 2 positions
+- Behaviour gates: `hasStoreAccess`, `bypassGate`, `seedData`, `overviewEmpty`, `zeroState`,
+  `ssoWelcome`, `ssoMultiBrand`, `ssoOriginBrand`
+
+Removing the panel means **choosing a fixed value for each**, and those are product decisions.
+**Affects:** Phase 1 shell removal, and the default appearance of the portal, wizard and
+checklist. **Owner:** Connor. Full list in `docs/architecture/interaction-inventory.md` §5.
+
+### OQ-P17 · Fidelity checklist item 1 cannot cover the Overview KPIs
+Seed revenue is `Math.random()`-generated (`workspace-app.jsx:27918`) and feeds the Overview
+totals — two loads gave $69,589 then $69,420, and 1,513 then 1,509 orders. Dates are
+`Date.now()`-relative and drift.
+
+So "side-by-side … colour all match" can never pass on those values. The checklist should say
+values are excluded and layout/typography/formatting compared instead, and `src/mock-data/` should
+use **fixed** fixtures so our own regression comparisons are stable.
+**Affects:** `AGENTS.md` fidelity checklist wording. Not blocking. **Owner:** Connor — a wording
+change to a governing doc, so not made unilaterally.

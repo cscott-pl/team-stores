@@ -126,3 +126,105 @@ change; no export content was altered.
 `package.json`, `npm install`, any application code — all blocked on OQ-B03 (Core's pinned
 versions, owner Jowin). GSD runtime not extracted and neither `new-project` nor `import` run: no
 `.planning/` exists and the roadmap currently lives in `REPO-SETUP.md`.
+
+---
+
+## Phase 2 — Full Workspace design inventory
+
+**Date:** 2026-09-09 · **Branch:** `chore/reference-export` · **Commits:** `2b837d7`, `dd4a7b3`,
+and this one
+
+Build-order step 1, done properly. No application code; no `package.json`; no `npm install`.
+
+### ⚠️ Two corrections to Phase 0 findings
+
+Both were in `docs/architecture/responsive-strategy.md`, already committed, and both came from a
+first pass that did not separate application code from the Claude Design preview scaffolding.
+
+1. **The design does floor the layout at 1280px.** Both application roots set `minWidth: 1280`
+   (`:27476`, and `:27423` for the gate), and the author's comment at `:25764` reads *"Native
+   iframe viewport — the App is min-width: 1280"*. Phase 0 said no minimum width existed, and
+   therefore that the previous attempt's global `min-width: 1280px` was that attempt's own
+   decision. **It was faithful reproduction.** Carried forward.
+2. **The 2↔3 column flip at 1500px is preview shell, not application.** It lives only in
+   `OverviewGrid` (`:25769–25772`), which renders under the Tweaks panel's "Frame overview"
+   toggle. `>= 1500` appears nowhere else. It must not become a token or a breakpoint.
+
+Corrected in `2b837d7`; OQ-P10 closed, since it only existed because of error 1. What survives:
+still exactly one `@media` and it is `prefers-reduced-motion`, so still no layout breakpoints.
+Re-counted with shell ranges excluded: **19** `clamp()` (2 more in the Tweaks panel), **54**
+`minmax()`, **17** `vw`, **17** `@keyframes` (not 16).
+
+Also corrected: **512** components and **160** data constants, not "514 top-level definitions" —
+that figure conflated the two and used a regex that missed `<Component` at end-of-line, the
+formatting used by every props-heavy mount.
+
+### What changed, file by file
+
+| File | Change |
+|---|---|
+| `docs/architecture/workspace-screen-inventory.md` | **new** — 22 screens in navigation order, how each is reached, three chrome states, the 6 dashboard tabs + 6 settings sections + 2 order sub-tabs, overlays per screen, states implemented vs absent, interaction-only states with their persistence, 5 unreachable branches, outbound links |
+| `docs/architecture/component-catalog.md` | **new** — primitives by fan-in (Tier 1/2), feature components mapped to folders, 71 unmounted split into value-referenced / `window`-exported / genuinely dead, DS name correspondence, re-derivation script |
+| `docs/architecture/interaction-inventory.md` | **new** — functional / semantically-wrong-but-functional / simulated / dead / preview-shell, with the 18 `href="#"` anchors listed by line and owner |
+| `docs/architecture/data-inventory.md` | **new** — entity shapes, 160 constants, 10 persistence keys, 22 `window.__*` globals classified, non-deterministic seed data |
+| `docs/features/README.md` | feature mapping onto `src/features/`, four things that do not fit flagged, uncited business rules listed |
+| `docs/architecture/README.md` | index updated |
+| `docs/open-questions.md` | OQ-P13…P17 added |
+
+### Findings that change later phases
+
+- **No error state exists anywhere** (`retry`: 0 occurrences) and there is exactly **one** loading
+  state. Nothing is async, so nothing can fail. Every `src/services/` seam therefore introduces
+  loading and failure UI the design never showed → **OQ-P13**, needs design.
+- **The store-template feature is fully built and entirely unreachable** — ~500 lines, plus three
+  live buttons wired to a destination that cannot be reached → **OQ-P14**.
+- **Seed revenue is `Math.random()`** (`:27918`), feeding the Overview KPIs. Observed $69,589 then
+  $69,420 across two loads. No value-level fidelity comparison can pass, and `src/mock-data/` must
+  use fixed fixtures → **OQ-P17**.
+- **Removing the Tweaks panel is not a deletion** — `App()` reads `tweaks.*` directly, and the
+  panel exposes variants that exist nowhere else (4 portal treatments, 2 wizard accents, 3
+  checklist accents). Each needs a chosen default → **OQ-P16**.
+- **~680 lines of genuinely dead components** — 6 defined and never referenced at all.
+- **Zero `TODO`/`FIXME`** in 33,939 lines.
+- **The 18 `href="#"` anchors are functional**, not dead — wrong element, right behaviour
+  (browser-verified). Plus the three primary nav links expose **no accessible name** while the
+  store side-nav buttons do.
+
+### Judgement calls
+
+**Classified primitives by fan-in, not mount count.** `WizardPanel` has 23 mounts but only 5
+owners (one feature); `IconChevron` has 28 mounts across 27 owners. Fan-in is what decides
+`components/common/`. *Rejected:* ranking by raw mounts, which would have promoted wizard-only
+components.
+
+**Flagged four features as not fitting the folder list rather than forcing them in** —
+`customizer-bridge`, `store-close-report`, `access`, `team-manager-portal`. *Rejected:* filing
+`customizer-bridge` under `products/`, which would bury the boundary `CLAUDE.md` requires.
+
+**Left `GreenButton` alone.** It looks like a `Button` variant, but folding it in is only correct
+if pixel-identical, and that is unverified. Recorded, not merged.
+
+**Did not delegate the bulk read to gemini,** as `CLAUDE.md`'s context strategy asks. The MCP tool
+loads but its backend CLI (`agy`) is not installed; installing it needs a `curl | bash` and an
+interactive sign-in, which was not authorised. Analysis was done directly instead — programmatic
+extraction into a scripted catalog plus browser verification. The re-derivation script in
+`component-catalog.md` exists so this is reproducible rather than a one-off read.
+
+### Verification
+
+Static extraction cross-checked against the running prototype, served from `reference/` with
+`localStorage` and `sessionStorage` cleared first per `reference/README.md`. Confirmed: both
+first-run modals appear in order (`WelcomeSSOModal`, then `StoreGuideModal` on first dashboard
+visit); the three header tabs navigate; the six side-nav items render as
+Home / My Teams / Products / Orders / Reports / Settings, matching `WORKSPACE_NAV`; viewport
+reported 1280×720, at the design's floor.
+
+### Fidelity checklist
+
+Items 1–7 and 9–11 **not applicable** — still no application code. **Item 8 passes**: nothing
+under `reference/` was modified; this phase only read it. Server stopped after the pass.
+
+### Left alone
+
+All scaffolding. Vue 3 is decided and recorded as provisional (`dd4a7b3`) but nothing is
+scaffolded yet. Token extraction (step 3) not started. GSD runtime not extracted; no `.planning/`.

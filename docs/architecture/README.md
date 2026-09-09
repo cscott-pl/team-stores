@@ -9,6 +9,15 @@ Routes, state, data flow, conventions, and the pinned toolchain versions.
 - [`toolchain-decisions.md`](toolchain-decisions.md) — **decided/provisional.** Vue 3 provisional
   and why it is *not* inferred from Core's stack; SCSS settled and closed; provenance of the two
   claims that come from outside this repo.
+- [`workspace-screen-inventory.md`](workspace-screen-inventory.md) — every screen in navigation
+  order, nested tabs and sections, overlays per screen, states implemented vs absent, and the
+  five unreachable branches.
+- [`component-catalog.md`](component-catalog.md) — 512 components split into primitives and
+  feature components by fan-in, dead code, and the design-system name correspondence.
+- [`interaction-inventory.md`](interaction-inventory.md) — every interactive element as
+  functional / semantically-wrong-but-functional / simulated / dead / preview-shell.
+- [`data-inventory.md`](data-inventory.md) — entity shapes, 160 data constants, 10 persistence
+  keys, the 22 `window.__*` globals, and the non-deterministic seed data.
 
 ## Still to write
 
