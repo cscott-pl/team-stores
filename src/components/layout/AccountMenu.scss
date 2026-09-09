@@ -1,0 +1,88 @@
+.account-menu {
+  position: relative;
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  margin-left: auto;
+
+  &__trigger {
+    display: inline-flex;
+    gap: var(--space-6);
+    align-items: center;
+    padding: var(--space-4) 2px;
+    font-family: inherit;
+    color: var(--text-primary);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-md);
+    outline-offset: 4px;
+    transition: opacity var(--duration-fast) var(--ease-default);
+
+    &:active {
+      opacity: 0.55;
+    }
+  }
+
+  &__name {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--tracking-wide-8);
+  }
+
+  &__list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: var(--z-tooltip);
+    width: 252px;
+    margin-top: -6px;
+    overflow: hidden;
+    background: var(--surface-card);
+    // One-off menu elevation from the prototype (:1119) — not one of the six
+    // recurring shadow steps. See DIV-006.
+    // stylelint-disable-next-line function-disallowed-list
+    box-shadow: 0 16px 40px rgb(20 20 30 / 16%);
+    border: var(--border-width) solid var(--line);
+    border-radius: var(--radius-xl);
+  }
+
+  &__item {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    width: 100%;
+    padding: 15px var(--space-9);
+    font-family: inherit;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    transition: background var(--duration-fast) var(--ease-default);
+
+    + .account-menu__item {
+      border-top: var(--border-width) solid var(--bg-soft-2);
+    }
+
+    &:hover {
+      background: var(--bg-soft);
+    }
+  }
+}
+
+// Matches the prototype's 140ms fade-and-lift.
+.account-menu-enter-active,
+.account-menu-leave-active {
+  transition:
+    opacity var(--duration-mid) var(--ease-default),
+    transform var(--duration-mid) var(--ease-default);
+}
+
+.account-menu-enter-from,
+.account-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}

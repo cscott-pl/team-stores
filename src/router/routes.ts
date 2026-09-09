@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import RoutePlaceholder from "@/components/common/RoutePlaceholder.vue";
 import OverviewPage from "@/features/overview/OverviewPage.vue";
+import WorkspaceLayout from "@/components/layout/WorkspaceLayout.vue";
 
 /**
  * The Workspace route table.
@@ -24,8 +25,6 @@ import OverviewPage from "@/features/overview/OverviewPage.vue";
  *  - `empty` — the zero-stores state of the Stores screen, not its own route.
  */
 export const routes: RouteRecordRaw[] = [
-  { path: "/", redirect: { name: "overview" } },
-
   // ── Access / compliance gate ───────────────────────────────────────────────
   // Full-viewport, no Workspace chrome. In the MVP: it has a current, in-force
   // spec. Unreachable in the prototype's default state because TWEAK_DEFAULTS
@@ -71,74 +70,86 @@ export const routes: RouteRecordRaw[] = [
     ],
   },
 
-  // ── Team Stores — the three-tab shell ──────────────────────────────────────
+  // ── The Team Stores shell — header, three tabs, account menu ───────────────
+  // Everything wearing the chrome hangs off one layout route. The store editor
+  // and the access flow deliberately sit outside it: the design drops the shell
+  // entirely for the editor and renders the access screens full-viewport.
   {
-    path: "/overview",
-    name: "overview",
-    component: OverviewPage,
-    meta: { title: "Overview", screen: "overview", spec: "Analytics Dashboard (Overview Tab)" },
-  },
-  {
-    path: "/orders",
-    name: "all-stores-orders",
-    component: RoutePlaceholder,
-    meta: { title: "All-stores orders", screen: "orders", spec: "All-Stores Orders Page" },
-  },
-  {
-    path: "/vault",
-    name: "stock-vault",
-    component: RoutePlaceholder,
-    meta: { title: "Stock Vault", screen: "vault", spec: "Product Catalog Management, Epic G" },
-  },
+    path: "/",
+    component: WorkspaceLayout,
+    children: [
+      { path: "", redirect: { name: "overview" } },
+    // ── Team Stores — the three-tab shell ──────────────────────────────────────
+    {
+        path: "overview",
+      name: "overview",
+      component: OverviewPage,
+      meta: { title: "Overview", screen: "overview", spec: "Analytics Dashboard (Overview Tab)" },
+    },
+    {
+        path: "orders",
+      name: "all-stores-orders",
+      component: RoutePlaceholder,
+      meta: { title: "All-stores orders", screen: "orders", spec: "All-Stores Orders Page" },
+    },
+    {
+        path: "vault",
+      name: "stock-vault",
+      component: RoutePlaceholder,
+      meta: { title: "Stock Vault", screen: "vault", spec: "Product Catalog Management, Epic G" },
+    },
 
-  // ── Stores ─────────────────────────────────────────────────────────────────
-  {
-    path: "/stores",
-    name: "stores",
-    component: RoutePlaceholder,
-    meta: { title: "Stores", screen: "list", spec: "Team Store Directory (Stores Tab)" },
-  },
-  {
-    path: "/stores/new",
-    name: "store-create",
-    component: RoutePlaceholder,
-    meta: {
+    // ── Stores ─────────────────────────────────────────────────────────────────
+    {
+        path: "stores",
+      name: "stores",
+      component: RoutePlaceholder,
+      meta: { title: "Stores", screen: "list", spec: "Team Store Directory (Stores Tab)" },
+    },
+    {
+        path: "stores/new",
+      name: "store-create",
+      component: RoutePlaceholder,
+      meta: {
       title: "Create a store",
       screen: "form",
       spec: "Step 1 – Basics · Step 2 – Divisions & Teams · Step 2 – Add Products · Step 3 – Review",
       note: "Three steps for an Individual Team Store, four for a League Store. The prototype already forks correctly.",
     },
-  },
-  {
-    path: "/leagues",
-    name: "leagues",
-    component: RoutePlaceholder,
-    meta: { title: "Leagues", screen: "leagues" },
-  },
-  {
-    path: "/leagues/:leagueId/settings",
-    name: "league-settings",
-    component: RoutePlaceholder,
-    meta: { title: "League settings", screen: "league-settings" },
-  },
+    },
+    {
+        path: "leagues",
+      name: "leagues",
+      component: RoutePlaceholder,
+      meta: { title: "Leagues", screen: "leagues" },
+    },
+    {
+        path: "leagues/:leagueId/settings",
+      name: "league-settings",
+      component: RoutePlaceholder,
+      meta: { title: "League settings", screen: "league-settings" },
+    },
 
-  // ── Account-menu destinations ──────────────────────────────────────────────
-  {
-    path: "/account",
-    name: "account",
-    component: RoutePlaceholder,
-    meta: { title: "My Account", screen: "account", spec: "Rep Account & Brand Customizer Access" },
-  },
-  {
-    path: "/workspace-settings",
-    name: "workspace-settings",
-    component: RoutePlaceholder,
-    meta: {
+    // ── Account-menu destinations ──────────────────────────────────────────────
+    {
+        path: "account",
+      name: "account",
+      component: RoutePlaceholder,
+      meta: { title: "My Account", screen: "account", spec: "Rep Account & Brand Customizer Access" },
+    },
+    {
+        path: "workspace-settings",
+      name: "workspace-settings",
+      component: RoutePlaceholder,
+      meta: {
       title: "Workspace Settings",
       screen: "wsettings",
       spec: "Workspace Settings",
       note: "Reached only from the account menu. Not a navigation tab — the shell stays at three tabs.",
     },
+    },
+
+    ],
   },
 
   // ── Store editor — chrome-free, six tabs ───────────────────────────────────

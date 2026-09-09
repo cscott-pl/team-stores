@@ -1,0 +1,39 @@
+.workspace-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: stretch;
+  height: var(--layout-header-height);
+  padding: 0 var(--space-14);
+  background: var(--surface-card);
+  border-bottom: var(--border-width) solid var(--line);
+
+  &__brand {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: var(--space-9);
+    align-items: center;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  &__mark {
+    display: block;
+    width: auto;
+    height: 38px;
+  }
+
+  &__rule {
+    width: 1px;
+    height: 28px;
+    background: var(--zinc-200);
+  }
+
+  &__wordmark {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+}

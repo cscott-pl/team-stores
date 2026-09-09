@@ -1,0 +1,32 @@
+.workspace-nav {
+  display: flex;
+  gap: var(--space-2);
+  align-self: stretch;
+  align-items: stretch;
+  margin-left: 44px;
+
+  &__tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--space-9);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--tracking-wide-8);
+    color: var(--zinc-700);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition:
+      color var(--duration-mid-3) var(--ease-default),
+      border-color var(--duration-mid-3) var(--ease-default);
+
+    &:hover {
+      color: var(--text-primary);
+    }
+
+    &--active {
+      color: var(--red-accent);
+      border-bottom-color: var(--red-accent);
+    }
+  }
+}
