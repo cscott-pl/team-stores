@@ -1,0 +1,23 @@
+# Review routing.
+#
+# Everything is reviewed by the design owner; the service seam and the build
+# configuration additionally go to Core Dev, because those are the parts they
+# inherit and have to live with.
+
+*                       @cscott-pl
+
+# The backend contract — the primary handoff artifact.
+/src/services/          @cscott-pl
+/docs/service-layers/   @cscott-pl
+
+# Build, lint and CI configuration.
+/package.json           @cscott-pl
+/package-lock.json      @cscott-pl
+/vite.config.ts         @cscott-pl
+/tsconfig*.json         @cscott-pl
+/eslint.config.js       @cscott-pl
+/.stylelintrc.json      @cscott-pl
+/.github/               @cscott-pl
+
+# The design export is read-only. Any change here needs a very good reason.
+/reference/             @cscott-pl
